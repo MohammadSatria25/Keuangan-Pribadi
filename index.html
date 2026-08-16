@@ -9,7 +9,7 @@
 *{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}.app{display:flex;min-height:100vh}
 .sidebar{width:250px;background:linear-gradient(180deg,var(--nav),#0b1d3b);color:#fff;padding:22px 15px;position:fixed;left:0;top:0;bottom:0;z-index:10}.logo{display:flex;align-items:center;gap:11px;padding:3px 10px 24px}.logo-mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:23px;box-shadow:0 8px 18px #0003}.logo strong{font-size:19px}.logo small{display:block;color:#b9cae8;margin-top:2px}.nav-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#91a8ca;margin:10px 12px}.nav a{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;color:#dce7f8;text-decoration:none;margin:3px 0;font-size:14px}.nav a:hover,.nav a.active{background:#ffffff18;color:#fff}.nav-icon{width:21px;text-align:center;font-size:17px}.sidebar-bottom{position:absolute;left:15px;right:15px;bottom:18px}.mini-card{background:#ffffff12;border:1px solid #ffffff18;border-radius:14px;padding:13px;font-size:12px;color:#dce7f8}.mini-card b{font-size:16px;display:block;margin-top:4px}
 .main{margin-left:250px;width:calc(100% - 250px);padding:25px 30px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.eyebrow{color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px}.title{font-size:27px;font-weight:800;margin-top:5px}.subtitle{color:var(--muted);font-size:13px;margin-top:4px}.top-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.field label{font-size:11px;color:var(--muted);font-weight:700;display:block;margin-bottom:5px}.field input,.field select{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;outline:none}.btn,.filebtn{border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 13px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn:hover,.filebtn:hover{transform:translateY(-1px)}
-.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(4,1fr)}.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.kpi{position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-35px;background:currentColor;opacity:.07}.kpi-top{display:flex;justify-content:space-between;align-items:center}.kpi-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:#eef4ff}.kpi-label{font-size:12px;color:var(--muted);font-weight:700}.kpi-value{font-size:22px;font-weight:850;margin-top:9px}.kpi-note{font-size:11px;color:var(--muted);margin-top:6px}.c-blue{color:#2563eb}.c-green{color:#16a34a}.c-red{color:#ef4444}.c-orange{color:#d97706}.section{margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.section-title h2{font-size:16px;margin:0}.muted{color:var(--muted);font-size:12px}.two{grid-template-columns:1.15fr .85fr}.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.account{border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(145deg,#fff,#f7faff);position:relative;overflow:hidden}.account:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#2563eb,#06b6d4)}.account-name{font-weight:750;font-size:13px}.account-bal{font-size:18px;font-weight:850;margin-top:8px}.formgrid{grid-template-columns:repeat(4,1fr)}.wide{grid-column:span 2}.actions{display:flex;gap:8px;flex-wrap:wrap}.chart-wrap{min-height:245px}.barrow{margin:13px 0}.barhead{display:flex;justify-content:space-between;font-size:12px}.bar{height:10px;background:#edf2f8;border-radius:20px;overflow:hidden;margin-top:6px}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#2563eb,#06b6d4)}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:11px;text-transform:uppercase}.num{text-align:right}.badge{padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:800}.badges{display:flex;gap:7px;flex-wrap:wrap}.receipt{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px dashed #9bb8ed}.receipt input[type=file]{display:none}.filebtn{display:inline-flex;align-items:center;gap:7px}.notice{padding:11px 13px;border-radius:11px;background:#fff7ed;color:#9a3412;font-size:11px}.empty{text-align:center;color:var(--muted);padding:22px}.hidden{display:none}#toast{position:fixed;right:22px;bottom:22px;background:#111827;color:#fff;padding:12px 15px;border-radius:11px;display:none;z-index:50}
+.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(4,1fr)}.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.kpi{position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-35px;background:currentColor;opacity:.07}.kpi-top{display:flex;justify-content:space-between;align-items:center}.kpi-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:#eef4ff}.kpi-label{font-size:12px;color:var(--muted);font-weight:700}.kpi-value{font-size:22px;font-weight:850;margin-top:9px}.kpi-note{font-size:11px;color:var(--muted);margin-top:6px}.c-blue{color:#2563eb}.c-green{color:#16a34a}.c-red{color:#ef4444}.c-orange{color:#d97706}.section{margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.section-title h2{font-size:16px;margin:0}.muted{color:var(--muted);font-size:12px}.two{grid-template-columns:1.15fr .85fr}.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.account{border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(145deg,#fff,#f7faff);position:relative;overflow:hidden}.account-btn{width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer}.account-btn:hover{border-color:#2563eb;box-shadow:0 8px 20px rgba(37,99,235,.12);transform:translateY(-1px)}.account-btn:focus{outline:3px solid #2563eb22;border-color:#2563eb}.account:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#2563eb,#06b6d4)}.account-name{font-weight:750;font-size:13px}.account-bal{font-size:18px;font-weight:850;margin-top:8px}.formgrid{grid-template-columns:repeat(4,1fr)}.wide{grid-column:span 2}.actions{display:flex;gap:8px;flex-wrap:wrap}.chart-wrap{min-height:245px}.barrow{margin:13px 0}.barhead{display:flex;justify-content:space-between;font-size:12px}.bar{height:10px;background:#edf2f8;border-radius:20px;overflow:hidden;margin-top:6px}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#2563eb,#06b6d4)}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:11px;text-transform:uppercase}.num{text-align:right}.badge{padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:800}.badges{display:flex;gap:7px;flex-wrap:wrap}.receipt{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px dashed #9bb8ed}.receipt input[type=file]{display:none}.filebtn{display:inline-flex;align-items:center;gap:7px}.notice{padding:11px 13px;border-radius:11px;background:#fff7ed;color:#9a3412;font-size:11px}.empty{text-align:center;color:var(--muted);padding:22px}.hidden{display:none}#toast{position:fixed;right:22px;bottom:22px;background:#111827;color:#fff;padding:12px 15px;border-radius:11px;display:none;z-index:50}
 @media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.account-grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:750px){.sidebar{width:72px;padding:15px 9px}.logo{justify-content:center;padding:3px 0 20px}.logo strong,.logo small,.nav-title,.nav a span{display:none}.nav a{justify-content:center;padding:12px}.sidebar-bottom{display:none}.main{margin-left:72px;width:calc(100% - 72px);padding:18px 13px}.formgrid{grid-template-columns:1fr 1fr}.wide{grid-column:span 2}}@media(max-width:520px){.kpis,.account-grid,.formgrid{grid-template-columns:1fr}.wide{grid-column:span 1}.main{padding:14px}.title{font-size:22px}.topbar{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
@@ -31,7 +31,7 @@
 </aside>
 <main class="main" id="dashboard">
 <div class="topbar"><div><div class="eyebrow">Ringkasan keuangan</div><div class="title">Selamat datang 👋</div><div class="subtitle">Pantau kondisi keuangan pribadi Anda dengan lebih rapi. Semua angka di dashboard mengikuti rekening aktif.</div></div>
-<div class="top-actions"><div class="field"><label>Periode</label><input id="period" type="month"></div><div class="field"><label>Rekening aktif</label><select id="viewAccount"></select></div><button class="btn" id="exportExcel">📥 Excel</button><button class="btn" id="exportPdf">📄 PDF</button></div></div>
+<div class="top-actions"><div class="field"><label>Periode</label><input id="period" type="month"></div><div class="field"><label>Rekening aktif — ubah di sini</label><select id="viewAccount"></select></div><button class="btn" id="exportExcel">📥 Excel</button><button class="btn" id="exportPdf">📄 PDF</button></div></div>
 <div class="grid kpis">
 <div class="card kpi c-blue"><div class="kpi-top"><span class="kpi-label">SALDO REKENING</span><span class="kpi-icon">💰</span></div><div id="saldo" class="kpi-value">Rp0</div><div class="kpi-note">Rekening aktif</div></div>
 <div class="card kpi c-green"><div class="kpi-top"><span class="kpi-label">PEMASUKAN</span><span class="kpi-icon">↗️</span></div><div id="income" class="kpi-value">Rp0</div><div class="kpi-note">Periode terpilih</div></div>
@@ -61,7 +61,7 @@
       <div class="field"><label>Tanggal</label><input id="editDate" type="date"></div>
       <div class="field"><label>Jenis</label><select id="editType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div>
       <div class="field"><label>Kategori</label><select id="editCategory"></select></div>
-      <div class="field"><label>Rekening</label><select id="editAccount"></select></div>
+      <div class="field"><label>Rekening aktif</label><select id="editAccount" disabled></select></div>
       <div class="field"><label>Nominal</label><input id="editAmount" type="number" min="0"></div>
       <div class="field wide"><label>Keterangan</label><input id="editNote"></div>
     </div>
@@ -90,6 +90,7 @@ let receiptFile=null, scanned={};
 const activeAccounts=()=>data.accounts.filter(a=>String(a.name||'').trim().toLowerCase()!=='cash');
 function removeCashFromUi(){ data.accounts=data.accounts.filter(a=>String(a.name||'').trim().toLowerCase()!=='cash'); }
 removeCashFromUi();
+window.activeAccountId=Number(data.accounts[0]?.id)||0;
 const $=id=>document.getElementById(id);
 const rp=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0);
 const today=new Date();
@@ -111,13 +112,10 @@ function accountBalance(a){
  return b;
 }
 function renderAccounts(){
- const currentView=String($('viewAccount')?.value||'');
- const currentTx=String($('txAccount')?.value||'');
- const currentEdit=String($('editAccount')?.value||'');
- const currentTo=String($('editTo')?.value||'');
  const accs=activeAccounts();
+ const current=Number(window.activeAccountId)||Number($('viewAccount')?.value)||Number(accs[0]?.id)||0;
 
- $('accounts').innerHTML=accs.map(a=>`<div class="account" style="cursor:pointer" onclick="selectAccount(${a.id})"><span class="account-name">${esc(a.name)}</span><strong class="account-bal">${rp(accountBalance(a))}</strong><small>Klik untuk membuka rekening</small></div>`).join('')||'<div class="empty">Belum ada rekening. Tambahkan rekening bank/e-wallet Anda.</div>';
+ $('accounts').innerHTML=accs.map(a=>`<button type="button" class="account account-btn" data-account-id="${a.id}" onclick="selectAccount(${a.id})"><span class="account-name">🏦 ${esc(a.name)}</span><strong class="account-bal">${rp(accountBalance(a))}</strong><small>${Number(a.id)===current?'✓ Rekening aktif':'Klik untuk memilih rekening'}</small></button>`).join('')||'<div class="empty">Belum ada rekening. Tambahkan rekening bank/e-wallet Anda.</div>';
 
  const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
  $('viewAccount').innerHTML=opts;
@@ -128,37 +126,41 @@ function renderAccounts(){
  if(!accs.length){
    $('viewAccount').innerHTML='<option value="">Belum ada rekening</option>';
    $('txAccount').innerHTML='<option value="">Tambahkan rekening terlebih dahulu</option>';
+   $('editAccount').innerHTML='<option value="">Tambahkan rekening terlebih dahulu</option>';
    return;
  }
 
- const viewOk=accs.some(a=>String(a.id)===currentView);
- const txOk=accs.some(a=>String(a.id)===currentTx);
- const editOk=accs.some(a=>String(a.id)===currentEdit);
- const toOk=accs.some(a=>String(a.id)===currentTo);
+ if(!accs.some(a=>Number(a.id)===current)) window.activeAccountId=Number(accs[0].id);
+ else window.activeAccountId=current;
 
- $('viewAccount').value=viewOk?currentView:String(accs[0].id);
- $('txAccount').value=txOk?currentTx:$('viewAccount').value;
- $('editAccount').value=editOk?currentEdit:$('viewAccount').value;
- $('editTo').value=toOk?currentTo:(accs.find(a=>String(a.id)!==String($('editAccount').value))?.id||accs[0].id);
+ const active=String(window.activeAccountId);
+ $('viewAccount').value=active;
+ $('txAccount').value=active;
+ $('editAccount').value=active;
+
+ const target=accs.find(a=>Number(a.id)!==Number(window.activeAccountId))||accs[0];
+ $('editTo').value=String(target.id);
 }
 
-function selectedAccountId(){ return Number($('viewAccount').value)||null; }
+function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
 function accountMonthTx(id){
  return monthTx().filter(t=>Number(t.accountId)===Number(id) || (t.type==='transfer' && Number(t.to)===Number(id)));
 }
-function selectAccount(id){
+window.selectAccount=function(id){
  const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
  if(!acc)return toast('Rekening tidak ditemukan');
+ window.activeAccountId=Number(acc.id);
  $('viewAccount').value=String(acc.id);
  $('txAccount').value=String(acc.id);
+ $('editAccount').value=String(acc.id);
  render();
-}
+ toast('Rekening aktif: '+acc.name);
+};
 
 function render(){
- const before=String($('viewAccount').value||'');
  renderAccounts();
  const id=selectedAccountId();
- if(id){ $('txAccount').value=String(id); }
+ if(id){ $('txAccount').value=String(id); $('editAccount').value=String(id); }
 
  const mt=id?accountMonthTx(id):[];
  const inc=mt.filter(t=>t.type==='income' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+t.amount,0);
@@ -228,7 +230,7 @@ function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 $('addAccount').onclick=()=>{const name=$('accName').value.trim();if(!name)return toast('Nama rekening belum diisi');if(name.toLowerCase()==='cash')return toast('Rekening Cash tidak digunakan pada sistem ini');data.accounts.push({id:Date.now(),name,opening:Number($('accBalance').value)||0});$('accName').value='';$('accBalance').value=0;save();render();toast('Rekening ditambahkan')};
 $('addTx').onclick=()=>{
  const amount=Number($('txAmount').value);if(!amount)return toast('Nominal belum diisi');
- const type=$('txType').value, accountId=Number($('txAccount').value); if(!accountId)return toast('Tambahkan rekening terlebih dahulu');
+ const type=$('txType').value, accountId=selectedAccountId(); if(!accountId)return toast('Pilih rekening aktif terlebih dahulu');
  if(type==='transfer'){
   const to=prompt('Masukkan ID rekening tujuan. ID rekening dapat dilihat melalui Backup Data atau gunakan rekening berikut: '+activeAccounts().map(a=>a.id+'='+a.name).join(', '));
   if(!to||Number(to)===accountId)return toast('Rekening tujuan tidak valid');
@@ -269,7 +271,7 @@ $('editModal').onclick=e=>{if(e.target.id==='editModal')$('editModal').style.dis
 $('saveEdit').onclick=()=>{
   const id=$('editId').value,t=data.transactions.find(x=>String(x.id)===String(id));
   if(!t)return;
-  const amount=Number($('editAmount').value)||0, accountId=Number($('editAccount').value), type=$('editType').value;
+  const amount=Number($('editAmount').value)||0, accountId=selectedAccountId(), type=$('editType').value;
   if(!amount)return toast('Nominal belum diisi');
   if(type==='transfer'){
     const to=Number($('editTo').value);
@@ -288,13 +290,10 @@ window.deleteDebt=id=>{if(confirm('Hapus piutang ini?')){data.debts=data.debts.f
 $('saveBudget').onclick=()=>{const k=$('budgetCategory').value,v=Number($('budgetAmount').value)||0;if(!v)return toast('Target anggaran belum diisi');data.budgets[k]=v;save();render();toast('Anggaran disimpan / direvisi')};
 $('period').onchange=render;
 $('viewAccount').onchange=()=>{
- const id=selectedAccountId();
- if(id){ $('txAccount').value=String(id); }
+ const id=Number($('viewAccount').value);
+ if(!id)return;
+ window.activeAccountId=id;
  render();
-};
-$('txAccount').onchange=()=>{
- const id=Number($('txAccount').value);
- if(id){ $('viewAccount').value=String(id); render(); }
 };
 
 $('receiptFile').onchange=e=>{receiptFile=e.target.files[0]||null;$('ocrStatus').textContent=receiptFile?'Foto siap dianalisis. Klik "Analisis struk".':''};
@@ -314,7 +313,7 @@ $('scanReceipt').onclick=async()=>{
  }catch(e){$('ocrStatus').textContent='OCR gagal. Silakan masukkan data secara manual.'}
  $('scanReceipt').disabled=false;
 };
-$('saveReceipt').onclick=()=>{const amount=Number($('rTotal').value);if(!amount)return toast('Total struk belum terbaca');data.transactions.push({id:Date.now(),date:$('rDate').value||today.toISOString().slice(0,10),type:'expense',category:$('rCategory').value,accountId:Number($('viewAccount').value),amount,note:'Struk - '+($('rStore').value||'Pembelian')});save();render();$('receiptPreview').style.display='none';$('receiptFile').value='';receiptFile=null;toast('Struk disimpan sebagai pengeluaran')};
+$('saveReceipt').onclick=()=>{const amount=Number($('rTotal').value);if(!amount)return toast('Total struk belum terbaca');data.transactions.push({id:Date.now(),date:$('rDate').value||today.toISOString().slice(0,10),type:'expense',category:$('rCategory').value,accountId:selectedAccountId(),amount,note:'Struk - '+($('rStore').value||'Pembelian')});save();render();$('receiptPreview').style.display='none';$('receiptFile').value='';receiptFile=null;toast('Struk disimpan sebagai pengeluaran')};
 
 $('backup').onclick=()=>{download('backup_keuangan.json','application/json',JSON.stringify(data,null,2));toast('Backup dibuat')};
 $('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();render();toast('Data berhasil dipulihkan')}catch{toast('File backup tidak valid')}};r.readAsText(f)};
