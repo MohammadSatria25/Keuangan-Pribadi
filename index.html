@@ -176,32 +176,52 @@ window.selectAccount=function(id){
  return false;
 };
 
+
+function accountMonthTx(id){
+  const accountId=Number(id);
+  const periodEl=document.getElementById('period');
+  const period=periodEl ? String(periodEl.value||'') : '';
+  return (data.transactions||[]).filter(t=>{
+    const date=String(t.date||'');
+    if(period && date.slice(0,7)!==period) return false;
+    if(t.type==='transfer'){
+      return Number(t.from)===accountId || Number(t.to)===accountId;
+    }
+    return Number(t.accountId)===accountId;
+  });
+}
+
 function render(){
- renderAccounts();
- const id=selectedAccountId();
- const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
- if(id){
-   if($('txAccount'))$('txAccount').value=String(id);
-   if($('editAccount'))$('editAccount').value=String(id);
-   if($('txAccountLocked'))$('txAccountLocked').value=acc?acc.name:'';
- }
- const mt=id?accountMonthTx(id):[];
- let inc=0,exp=0;
- mt.forEach(t=>{
-   const amount=Number(t.amount)||0;
-   if(t.type==='income' && Number(t.accountId)===Number(id)) inc+=amount;
-   if(t.type==='expense' && Number(t.accountId)===Number(id)) exp+=amount;
-   if(t.type==='transfer'){
-     // Transfers change balances but are not income/expense.
-   }
- });
- $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
- $('income').textContent=rp(inc);
- $('expense').textContent=rp(exp);
- if($('receivable'))$('receivable').textContent=rp(inc-exp);
- renderAccountRecap();
- renderTransactions(mt);renderMonitoring(mt);renderDebts();
- renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
+  renderAccounts();
+  const id=selectedAccountId();
+  const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
+
+  if(id){
+    if($('txAccount')) $('txAccount').value=String(id);
+    if($('editAccount')) $('editAccount').value=String(id);
+    if($('txAccountLocked')) $('txAccountLocked').value=acc?acc.name:'';
+  }
+
+  const mt=id ? accountMonthTx(id) : [];
+  let inc=0, exp=0;
+  mt.forEach(t=>{
+    const amount=Number(t.amount)||0;
+    if(t.type==='income' && Number(t.accountId)===Number(id)) inc+=amount;
+    if(t.type==='expense' && Number(t.accountId)===Number(id)) exp+=amount;
+  });
+
+  if($('saldo')) $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
+  if($('income')) $('income').textContent=rp(inc);
+  if($('expense')) $('expense').textContent=rp(exp);
+  if($('receivable')) $('receivable').textContent=rp(inc-exp);
+
+  if(typeof renderAccountRecap==='function')renderAccountRecap();
+  if(typeof renderTransactions==='function')renderTransactions(mt);
+  if(typeof renderMonitoring==='function')renderMonitoring(mt);
+  if(typeof renderDebts==='function')renderDebts();
+  if(typeof renderCharts==='function')renderCharts(mt,inc,exp);
+  if(typeof renderBudgets==='function')renderBudgets(mt);
+  if(typeof renderAnalysis==='function')renderAnalysis(mt,inc,exp);
 }
 function renderAccountRecap(){
  const month=$('period').value;
@@ -692,7 +712,7 @@ window.deleteAccountDirect=function(id){
   try{
     const state=window.data;
     if(!state || !Array.isArray(state.accounts)){
-      alert('Data rekening belum siap. Silakan muat ulang website sekali.');
+      alert('Data rekening belum siap. Silakan muat ulang website.');
       return false;
     }
     const account=state.accounts.find(a=>Number(a.id)===Number(id));
@@ -706,7 +726,7 @@ window.deleteAccountDirect=function(id){
       Number(t.to)===Number(id)
     );
     if(used){
-      alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi.\\n\\nHapus atau revisi transaksi rekening ini terlebih dahulu.');
+      alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi.\n\nHapus atau revisi transaksi rekening ini terlebih dahulu.');
       return false;
     }
     if(state.accounts.length<=1){
@@ -714,13 +734,32 @@ window.deleteAccountDirect=function(id){
       return false;
     }
     if(!window.confirm('Yakin ingin menghapus rekening "'+(account.name||'')+'"?')) return false;
+
+    const deletedName=account.name||'';
     state.accounts=state.accounts.filter(a=>Number(a.id)!==Number(id));
     window.data=state;
+
     const next=state.accounts[0];
-    window.activeAccountId=next?Number(next.id):null;
+    if(window.setActiveAccount && next){
+      window.setActiveAccount(Number(next.id));
+    }else{
+      window.activeAccountId=next?Number(next.id):null;
+    }
+
     if(typeof save==='function')save();
-    if(typeof render==='function')render();
-    alert('Rekening "'+(account.name||'')+'" berhasil dihapus.');
+
+    // Re-render safely. A missing optional panel must not turn a successful
+    // deletion into a "Gagal menghapus rekening" message.
+    try{
+      if(typeof render==='function')render();
+    }catch(renderError){
+      console.error('Render after account deletion:',renderError);
+      try{
+        if(typeof renderAccounts==='function')renderAccounts();
+      }catch(e){}
+    }
+
+    alert('Rekening "'+deletedName+'" berhasil dihapus.');
     return false;
   }catch(err){
     console.error(err);
@@ -771,6 +810,25 @@ window.deleteAccountDirect=function(id){
     }
     return null;
   };
+})();
+</script>
+
+<script>
+(function(){
+  function syncActive(){
+    try{
+      if(!window.data || !Array.isArray(data.accounts) || !data.accounts.length)return;
+      let id=window.getActiveAccountId?window.getActiveAccountId():null;
+      if(!id){
+        try{id=Number(localStorage.getItem('keuangan_active_account'));}catch(e){}
+      }
+      if(!data.accounts.some(a=>Number(a.id)===Number(id)))id=Number(data.accounts[0].id);
+      if(window.setActiveAccount)window.setActiveAccount(id);
+      const sel=document.getElementById('viewAccount');
+      if(sel)sel.value=String(id);
+    }catch(e){console.error(e)}
+  }
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(syncActive,50);});
 })();
 </script>
 </body></html>
