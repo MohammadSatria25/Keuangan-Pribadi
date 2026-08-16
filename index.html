@@ -122,50 +122,65 @@ function renderAccountManage(){
 }
 function renderAccounts(){
  const accs=activeAccounts();
- const current=Number(document.getElementById('viewAccount')?.value)||null;
- const htmlCards=accs.map(a=>`<div class="account"><div onclick="selectAccount(${a.id})" style="cursor:pointer"><span class="account-name">${esc(a.name)}</span><div class="account-bal">${rp(accountBalance(a))}</div><small>${current===a.id?'● Rekening aktif':'Klik untuk memilih'}</small></div><div class="actions" style="margin-top:10px"><button class="btn edit" onclick="event.stopPropagation();editAccount(${a.id})">✏️ Edit</button><button class="btn delete" onclick="event.stopPropagation();deleteAccount(${a.id})">🗑️ Hapus</button></div></div>`).join('');
- renderAccountManage(); $('accounts').innerHTML=htmlCards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
+ const current=Number(window.activeAccountId||document.getElementById('viewAccount')?.value)||null;
+ const cards=accs.map(a=>`
+ <div class="account">
+   <div class="account-select" data-account-select="${a.id}" style="cursor:pointer">
+     <span class="account-name">${esc(a.name)}</span>
+     <div class="account-bal">${rp(accountBalance(a))}</div>
+     <small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small>
+   </div>
+   <div class="actions" style="margin-top:10px">
+     <button type="button" class="btn edit account-edit-btn" data-account-edit="${a.id}">✏️ Edit</button>
+     <button type="button" class="btn delete account-delete-btn" data-account-delete="${a.id}">🗑️ Hapus</button>
+   </div>
+ </div>`).join('');
+ $('accounts').innerHTML=cards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
  const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
  $('viewAccount').innerHTML=opts||'<option value="">Belum ada rekening</option>';
  if(accs.length){
-   const keep=accs.some(a=>a.id===current)?current:accs[0].id;
+   const keep=accs.some(a=>Number(a.id)===Number(current))?Number(current):Number(accs[0].id);
+   window.activeAccountId=keep;
    $('viewAccount').value=String(keep);
  }
  if($('txAccount')) $('txAccount').innerHTML=opts;
  if($('editAccount')) $('editAccount').innerHTML=opts;
  if($('editTo')) $('editTo').innerHTML=opts;
  if($('txAccountLocked')){
-   const a=accs.find(x=>x.id===Number($('viewAccount').value));
+   const a=accs.find(x=>Number(x.id)===Number(window.activeAccountId));
    $('txAccountLocked').value=a?a.name:'Belum ada rekening';
  }
+ renderAccountManage();
 }
-
 function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
 function accountMonthTx(id){
  return monthTx().filter(t=>Number(t.accountId)===Number(id) || (t.type==='transfer' && Number(t.to)===Number(id)));
 }
 window.selectAccount=function(id){
  const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
- if(!acc)return toast('Rekening tidak ditemukan');
+ if(!acc){toast('Rekening tidak ditemukan');return;}
  window.activeAccountId=Number(acc.id);
- $('viewAccount').value=String(acc.id);
- $('txAccount').value=String(acc.id);
- $('editAccount').value=String(acc.id);
- render();
- toast('Rekening aktif: '+acc.name);
+ if($('viewAccount'))$('viewAccount').value=String(acc.id);
+ if(typeof render==='function')render();
 };
 
 function render(){
  renderAccounts();
  const id=selectedAccountId();
- if(id){ $('txAccount').value=String(id); $('editAccount').value=String(id); }
-
+ if(id){
+   $('txAccount').value=String(id);
+   $('editAccount').value=String(id);
+   const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
+   if($('txAccountLocked'))$('txAccountLocked').value=acc?acc.name:'';
+ }
  const mt=id?accountMonthTx(id):[];
- const inc=mt.filter(t=>t.type==='income' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+t.amount,0);
- const exp=mt.filter(t=>t.type==='expense' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+t.amount,0);
- const acc=activeAccounts().find(a=>a.id===id);
+ const inc=mt.filter(t=>t.type==='income' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+(Number(t.amount)||0),0);
+ const exp=mt.filter(t=>t.type==='expense' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+(Number(t.amount)||0),0);
+ const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
  $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
- $('income').textContent=rp(inc); $('expense').textContent=rp(exp); $('receivable').textContent=rp(inc-exp);
+ $('income').textContent=rp(inc);
+ $('expense').textContent=rp(exp);
+ $('receivable').textContent=rp(inc-exp);
  renderAccountRecap();
  renderTransactions(mt);renderMonitoring(mt);renderDebts();renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
 }
@@ -439,22 +454,21 @@ render();
     document.getElementById('accountEditModal').style.display='flex';
   };
   window.deleteAccount=function(id){
-    const a=acct(id); if(!a)return;
-    const used=(data.transactions||[]).some(t=>String(t.accountId)===String(id)||String(t.from)===String(id)||String(t.to)===String(id));
-    if(used){
-      alert('Rekening "'+(a.name||'')+'" masih memiliki transaksi. Hapus/revisi transaksi rekening tersebut terlebih dahulu agar riwayat keuangan tidak rusak.');
-      return;
-    }
-    if((data.accounts||[]).length<=1){alert('Minimal harus ada satu rekening.');return;}
-    if(confirm('Hapus rekening "'+(a.name||'')+'"?\\nRekening ini akan dihapus dari daftar.')){
-      const wasActive=String(document.getElementById('viewAccount')?.value)===String(id);
-      data.accounts=data.accounts.filter(x=>String(x.id)!==String(id));
-      if(typeof save==='function')save();
-      if(wasActive && data.accounts.length) document.getElementById('viewAccount').value=String(data.accounts[0].id);
-      if(typeof render==='function')render();
-      alert('Rekening berhasil dihapus.');
-    }
-  };
+ const a=acct(id); if(!a){toast('Rekening tidak ditemukan');return;}
+ const used=(data.transactions||[]).some(t=>Number(t.accountId)===Number(id)||Number(t.from)===Number(id)||Number(t.to)===Number(id));
+ if(used){
+   toast('Rekening masih memiliki transaksi. Hapus/revisi transaksi tersebut terlebih dahulu.');
+   return;
+ }
+ if((data.accounts||[]).length<=1){toast('Minimal harus ada satu rekening.');return;}
+ if(!window.confirm('Hapus rekening "'+(a.name||'')+'"?'))return;
+ data.accounts=data.accounts.filter(x=>Number(x.id)!==Number(id));
+ if(typeof save==='function')save();
+ const next=data.accounts[0];
+ window.activeAccountId=next?Number(next.id):null;
+ if(typeof render==='function')render();
+ toast('Rekening berhasil dihapus');
+};
   document.getElementById('closeAccountEdit').onclick=document.getElementById('cancelAccountEdit').onclick=function(){
     document.getElementById('accountEditModal').style.display='none';
   };
@@ -472,4 +486,52 @@ render();
   };
 })();
 </script>
-<script>document.addEventListener('DOMContentLoaded',function(){try{if(typeof render==='function')render();}catch(e){console.error(e)}});</script></body></html>
+<script>document.addEventListener('DOMContentLoaded',function(){try{if(typeof render==='function')render();}catch(e){console.error(e)}});</script>
+<script>
+document.addEventListener('click', function(e){
+  const edit=e.target.closest('[data-account-edit]');
+  const del=e.target.closest('[data-account-delete]');
+  const sel=e.target.closest('[data-account-select]');
+  if(edit){
+    e.preventDefault(); e.stopPropagation();
+    const id=Number(edit.dataset.accountEdit);
+    if(typeof window.editAccount==='function')window.editAccount(id);
+    return;
+  }
+  if(del){
+    e.preventDefault(); e.stopPropagation();
+    const id=Number(del.dataset.accountDelete);
+    if(typeof window.deleteAccount==='function')window.deleteAccount(id);
+    return;
+  }
+  if(sel){
+    e.preventDefault();
+    const id=Number(sel.dataset.accountSelect);
+    if(typeof window.selectAccount==='function')window.selectAccount(id);
+  }
+});
+</script>
+
+<script>
+(function(){
+  try{
+    if(!window.data)return;
+    const accounts=data.accounts||[];
+    const byName={};
+    accounts.forEach(a=>{byName[String(a.name||'').trim().toLowerCase()]=a.id});
+    (data.transactions||[]).forEach(t=>{
+      if(t.accountId===undefined||t.accountId===null||t.accountId===''){
+        const name=t.accountName||t.account||t.rekening||t.account_name;
+        if(name && byName[String(name).trim().toLowerCase()]!==undefined)t.accountId=byName[String(name).trim().toLowerCase()];
+      }
+      if(t.accountId!==undefined)t.accountId=Number(t.accountId);
+      if(t.from!==undefined)t.from=Number(t.from);
+      if(t.to!==undefined)t.to=Number(t.to);
+      if(t.amount!==undefined)t.amount=Number(t.amount)||0;
+    });
+    accounts.forEach(a=>{a.id=Number(a.id);a.opening=Number(a.opening)||0});
+    if(typeof save==='function')save();
+  }catch(e){console.error('Data migration',e)}
+})();
+</script>
+</body></html>
