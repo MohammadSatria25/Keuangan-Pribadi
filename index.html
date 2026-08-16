@@ -7,7 +7,7 @@
 <style>
 :root{--bg:#f4f7fb;--surface:#fff;--text:#17243b;--muted:#718096;--line:#e7edf5;--nav:#102b57;--primary:#2563eb;--green:#16a34a;--red:#ef4444;--orange:#f59e0b;--shadow:0 10px 28px rgba(20,45,90,.07)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}button,input,select{font:inherit}
-.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:linear-gradient(180deg,#102b57,#0b1d3b);color:#fff;padding:20px 14px;z-index:20}.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 25px}.brand-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:21px}.brand b{font-size:18px}.brand small{display:block;color:#b9c8df;margin-top:2px}.nav-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#91a8ca;margin:10px 11px}.nav button{width:100%;display:flex;align-items:center;gap:11px;background:transparent;border:0;color:#dce7f8;padding:11px 12px;border-radius:11px;text-align:left;margin:3px 0;font-weight:650}.nav button:hover,.nav button.active{background:#ffffff18;color:#fff}.ico{width:22px;text-align:center;font-size:17px}.main{margin-left:245px;padding:28px 32px;min-height:100vh}.view{display:none}.view.active{display:block}.header{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:20px}.eyebrow{color:var(--primary);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.title{font-size:27px;font-weight:850;margin-top:5px}.subtitle{font-size:13px;color:var(--muted);margin-top:4px}.filters{display:flex;gap:9px;align-items:end}.field label{display:block;color:var(--muted);font-size:10px;font-weight:800;margin-bottom:5px}.field input,.field select{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none}.grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(3,1fr)}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.kpi{min-height:120px}.kpi-label{font-size:11px;color:var(--muted);font-weight:800}.kpi-icon{float:right;width:37px;height:37px;border-radius:11px;display:grid;place-items:center;background:#eff5ff;font-size:18px}.kpi-value{font-size:24px;font-weight:850;margin-top:14px}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--primary)}.orange{color:#d97706}.two{grid-template-columns:1fr 1fr}.section{margin-top:16px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-title h2{font-size:16px;margin:0}.muted{font-size:12px;color:var(--muted)}.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.account{border:1px solid var(--line);border-radius:13px;padding:14px;background:linear-gradient(145deg,#fff,#f7faff);cursor:pointer}.account:hover{border-color:#9dbcf5;transform:translateY(-1px)}.account-name{font-weight:800}.account-bal{font-size:18px;font-weight:850;margin-top:8px}.account small{color:var(--muted);font-size:11px}.pie-area{display:flex;align-items:center;gap:28px;min-height:250px}.pie{width:205px;height:205px;border-radius:50%;background:conic-gradient(#2563eb 0 35%,#16a34a 35% 60%,#f59e0b 60% 80%,#ef4444 80% 100%);box-shadow:inset 0 0 0 20px #fff}.legend{flex:1}.legend-row{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:12px}.dot{width:10px;height:10px;border-radius:50%}.empty{text-align:center;padding:25px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:9px;font-weight:750;cursor:pointer}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.notice{padding:11px 13px;background:#eff6ff;border-radius:10px;color:#1d4ed8;font-size:11px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:10px;text-transform:uppercase;color:var(--muted)}.num{text-align:right}
+.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:245px;background:linear-gradient(180deg,#102b57,#0b1d3b);color:#fff;padding:20px 14px;z-index:20}.brand{display:flex;align-items:center;gap:10px;padding:4px 10px 25px}.brand-icon{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:21px}.brand b{font-size:18px}.brand small{display:block;color:#b9c8df;margin-top:2px}.nav-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#91a8ca;margin:10px 11px}.nav button{width:100%;display:flex;align-items:center;gap:11px;background:transparent;border:0;color:#dce7f8;padding:11px 12px;border-radius:11px;text-align:left;margin:3px 0;font-weight:650}.nav button:hover,.nav button.active{background:#ffffff18;color:#fff}.ico{width:22px;text-align:center;font-size:17px}.main{margin-left:245px;padding:28px 32px;min-height:100vh}.view{display:none}.view.active{display:block}.header{display:flex;justify-content:space-between;align-items:flex-end;gap:15px;margin-bottom:20px}.eyebrow{color:var(--primary);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:1.2px}.title{font-size:27px;font-weight:850;margin-top:5px}.subtitle{font-size:13px;color:var(--muted);margin-top:4px}.filters{display:flex;gap:9px;align-items:end}.field label{display:block;color:var(--muted);font-size:10px;font-weight:800;margin-bottom:5px}.field input,.field select{background:#fff;border:1px solid var(--line);border-radius:9px;padding:9px 11px;outline:none}.grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(3,1fr)}.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.kpi{min-height:120px}.kpi-label{font-size:11px;color:var(--muted);font-weight:800}.kpi-icon{float:right;width:37px;height:37px;border-radius:11px;display:grid;place-items:center;background:#eff5ff;font-size:18px}.kpi-value{font-size:24px;font-weight:850;margin-top:14px}.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--primary)}.orange{color:#d97706}.two{grid-template-columns:1fr 1fr}.section{margin-top:16px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section-title h2{font-size:16px;margin:0}.muted{font-size:12px;color:var(--muted)}.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.account{border:1px solid var(--line);border-radius:13px;padding:14px;background:linear-gradient(145deg,#fff,#f7faff);cursor:pointer}.account:hover{border-color:#9dbcf5;transform:translateY(-1px)}.account-name{font-weight:800}.account-bal{font-size:18px;font-weight:850;margin-top:8px}.account small{color:var(--muted);font-size:11px}.pie-area{display:flex;align-items:center;gap:28px;min-height:250px}.pie{width:205px;height:205px;border-radius:50%;background:conic-gradient(#2563eb 0 35%,#16a34a 35% 60%,#f59e0b 60% 80%,#ef4444 80% 100%);box-shadow:inset 0 0 0 20px #fff}.legend{flex:1}.legend-row{display:flex;align-items:center;gap:8px;margin:9px 0;font-size:12px}.dot{width:10px;height:10px;border-radius:50%}.empty{text-align:center;padding:25px;color:var(--muted)}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:9px;font-weight:750;cursor:pointer}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn.edit{color:#1d4ed8;border-color:#bfdbfe;background:#eff6ff}.btn.delete{color:#dc2626;border-color:#fecaca;background:#fff1f2}.notice{padding:11px 13px;background:#eff6ff;border-radius:10px;color:#1d4ed8;font-size:11px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:10px;text-transform:uppercase;color:var(--muted)}.num{text-align:right}
 @media(max-width:850px){.sidebar{width:72px}.brand{justify-content:center}.brand div:not(.brand-icon),.nav-label,.nav button span:not(.ico){display:none}.nav button{justify-content:center}.main{margin-left:72px;padding:18px 14px}.kpis{grid-template-columns:1fr}.two{grid-template-columns:1fr}.account-grid{grid-template-columns:1fr 1fr}.header{align-items:flex-start;flex-direction:column}.filters{width:100%}}
 @media(max-width:520px){.account-grid{grid-template-columns:1fr}.filters{flex-direction:column;align-items:stretch}.pie-area{flex-direction:column}.pie{width:175px;height:175px}}
 </style>
@@ -40,7 +40,7 @@
 <div class="card kpi green"><span class="kpi-icon">↗️</span><span class="kpi-label">PEMASUKAN</span><div id="income" class="kpi-value">Rp0</div></div>
 <div class="card kpi red"><span class="kpi-icon">↘️</span><span class="kpi-label">PENGELUARAN</span><div id="expense" class="kpi-value">Rp0</div></div>
 </div>
-<section class="card section"><div class="section-title"><h2>🏦 Rekening</h2><span class="muted">Pilih kartu untuk mengganti rekening aktif</span></div><div id="accounts" class="account-grid"></div></section>
+<section class="card section"><div class="section-title"><h2>🏦 Rekening</h2><span class="muted">Pilih kartu atau gunakan Edit/Hapus</span></div><div id="accounts" class="account-grid"></div><div class="notice" style="margin-top:12px">💡 Rekening yang sudah ada akan langsung muncul saat website dibuka. Gunakan <b>Edit</b> untuk memperbaiki nama/saldo awal atau <b>Hapus</b> untuk menghapus rekening yang tidak digunakan.</div></section>
 <div class="grid two section">
 <section class="card"><div class="section-title"><h2>🥧 Pengeluaran per Kategori</h2><span class="muted">Bulan & rekening aktif</span></div><div id="expensePie" class="pie-area"></div></section>
 <section class="card"><div class="section-title"><h2>📌 Ringkasan</h2><span class="muted">Informasi umum</span></div><div id="analysis" class="muted">Belum ada data.</div><div id="badges" class="badges" style="margin-top:12px"></div></section>
@@ -53,7 +53,12 @@
 <div class="card section"><div class="section-title"><h2>Daftar Transaksi Rekening Aktif</h2><span class="muted">Edit atau hapus dari sini</span></div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div></div>
 </section>
 
-<section id="view-rekening" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Rekening</div><div class="subtitle">Kelola rekening satu per satu.</div></div></div><section class="card" id="rekening"><div class="section-title"><h2>💳 Daftar Rekening</h2><span class="muted">Pilih rekening untuk melihat detail</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / BRI / E-Wallet"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div></section></section>
+<section id="view-rekening" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Rekening</div><div class="subtitle">Kelola rekening satu per satu.</div></div></div><section class="card" id="rekening"><div class="section-title"><h2>💳 Daftar Rekening</h2><span class="muted">Pilih rekening untuk melihat detail</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / BRI / E-Wallet"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div>
+<div class="card section" style="box-shadow:none">
+ <div class="section-title"><h2>⚙️ Kelola Rekening</h2><span class="muted">Edit atau hapus rekening yang tidak diperlukan</span></div>
+ <div class="table-wrap"><table><thead><tr><th>Rekening</th><th class="num">Saldo Saat Ini</th><th>Aksi</th></tr></thead><tbody id="accountManageTable"></tbody></table></div>
+</div>
+</section></section>
 
 <section id="view-anggaran" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Anggaran</div><div class="subtitle">Anggaran hanya untuk rekening aktif dan periode terpilih.</div></div></div><section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section></section>
 
@@ -110,35 +115,29 @@ function accountBalance(a){
  });
  return b;
 }
+
+function renderAccountManage(){
+ const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="editAccount(${a.id})">✏️ Edit</button><button class="btn delete" onclick="deleteAccount(${a.id})">🗑️ Hapus</button></div></td></tr>`).join('');
+ const el=$('accountManageTable'); if(el)el.innerHTML=rows||'<tr><td colspan="3" class="empty">Belum ada rekening.</td></tr>';
+}
 function renderAccounts(){
  const accs=activeAccounts();
- const current=Number(window.activeAccountId)||Number($('viewAccount')?.value)||Number(accs[0]?.id)||0;
-
- $('accounts').innerHTML=accs.map(a=>`<button type="button" class="account account-btn" data-account-id="${a.id}" onclick="selectAccount(${a.id})"><span class="account-name">🏦 ${esc(a.name)}</span><strong class="account-bal">${rp(accountBalance(a))}</strong><small>${Number(a.id)===current?'✓ Rekening aktif':'Klik untuk memilih rekening'}</small></button>`).join('')||'<div class="empty">Belum ada rekening. Tambahkan rekening bank/e-wallet Anda.</div>';
-
+ const current=Number(document.getElementById('viewAccount')?.value)||null;
+ const htmlCards=accs.map(a=>`<div class="account"><div onclick="selectAccount(${a.id})" style="cursor:pointer"><span class="account-name">${esc(a.name)}</span><div class="account-bal">${rp(accountBalance(a))}</div><small>${current===a.id?'● Rekening aktif':'Klik untuk memilih'}</small></div><div class="actions" style="margin-top:10px"><button class="btn edit" onclick="event.stopPropagation();editAccount(${a.id})">✏️ Edit</button><button class="btn delete" onclick="event.stopPropagation();deleteAccount(${a.id})">🗑️ Hapus</button></div></div>`).join('');
+ renderAccountManage(); $('accounts').innerHTML=htmlCards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
  const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- $('viewAccount').innerHTML=opts;
- $('txAccount').innerHTML=opts;
- $('editAccount').innerHTML=opts;
- $('editTo').innerHTML=opts;
-
- if(!accs.length){
-   $('viewAccount').innerHTML='<option value="">Belum ada rekening</option>';
-   $('txAccount').innerHTML='<option value="">Tambahkan rekening terlebih dahulu</option>';
-   $('editAccount').innerHTML='<option value="">Tambahkan rekening terlebih dahulu</option>';
-   return;
+ $('viewAccount').innerHTML=opts||'<option value="">Belum ada rekening</option>';
+ if(accs.length){
+   const keep=accs.some(a=>a.id===current)?current:accs[0].id;
+   $('viewAccount').value=String(keep);
  }
-
- if(!accs.some(a=>Number(a.id)===current)) window.activeAccountId=Number(accs[0].id);
- else window.activeAccountId=current;
-
- const active=String(window.activeAccountId);
- $('viewAccount').value=active;
- $('txAccount').value=active;
- $('editAccount').value=active;
-
- const target=accs.find(a=>Number(a.id)!==Number(window.activeAccountId))||accs[0];
- $('editTo').value=String(target.id);
+ if($('txAccount')) $('txAccount').innerHTML=opts;
+ if($('editAccount')) $('editAccount').innerHTML=opts;
+ if($('editTo')) $('editTo').innerHTML=opts;
+ if($('txAccountLocked')){
+   const a=accs.find(x=>x.id===Number($('viewAccount').value));
+   $('txAccountLocked').value=a?a.name:'Belum ada rekening';
+ }
 }
 
 function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
@@ -181,7 +180,7 @@ function renderAccountRecap(){
 }
 
 function renderTransactions(mt){
- $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
+ $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn edit" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn delete" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
 }
 function renderDebts(){
  const rows=data.debts||[];
@@ -242,7 +241,7 @@ function renderMonitoring(mt){
   $('monitorTable').innerHTML=rows.map(t=>{
     const kind=t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer';
     const color=t.type==='income'?'#16a34a':t.type==='expense'?'#ef4444':'#2563eb';
-    return `<tr><td>${esc(t.date||'')}</td><td style="color:${color};font-weight:800">${kind}</td><td>${esc(t.category||'-')}</td><td>${esc(t.note||'-')}</td><td class="num" style="font-weight:800">${rp(t.amount||0)}</td><td><div class="actions"><button class="btn" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`;
+    return `<tr><td>${esc(t.date||'')}</td><td style="color:${color};font-weight:800">${kind}</td><td>${esc(t.category||'-')}</td><td>${esc(t.note||'-')}</td><td class="num" style="font-weight:800">${rp(t.amount||0)}</td><td><div class="actions"><button class="btn edit" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn delete" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`;
   }).join('')||'<tr><td colspan="6" class="empty">Belum ada transaksi pada rekening/periode aktif.</td></tr>';
 }
 function fillEditOptions(){
@@ -413,4 +412,64 @@ render();
   if(oldRender){window.render=function(){oldRender();syncAccountUI();};}
 })();
 </script>
-</body></html>
+
+<div id="accountEditModal" style="display:none;position:fixed;inset:0;background:#0b1d3b88;z-index:60;align-items:center;justify-content:center;padding:18px">
+  <div class="card" style="width:min(520px,100%)">
+    <div class="section-title"><h2>✏️ Edit Rekening</h2><button class="btn" id="closeAccountEdit">Tutup</button></div>
+    <input id="editAccountId" type="hidden">
+    <div class="grid" style="gap:12px">
+      <div class="field"><label>Nama rekening</label><input id="editAccountName"></div>
+      <div class="field"><label>Saldo awal</label><input id="editAccountOpening" type="number" min="0"></div>
+    </div>
+    <div class="actions" style="justify-content:flex-end;margin-top:15px">
+      <button class="btn" id="cancelAccountEdit">Batal</button>
+      <button class="btn primary" id="saveAccountEdit">💾 Simpan perubahan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function acct(id){return (window.data&&data.accounts||[]).find(a=>String(a.id)===String(id))}
+  window.editAccount=function(id){
+    const a=acct(id); if(!a)return;
+    document.getElementById('editAccountId').value=a.id;
+    document.getElementById('editAccountName').value=a.name||'';
+    document.getElementById('editAccountOpening').value=a.opening||0;
+    document.getElementById('accountEditModal').style.display='flex';
+  };
+  window.deleteAccount=function(id){
+    const a=acct(id); if(!a)return;
+    const used=(data.transactions||[]).some(t=>String(t.accountId)===String(id)||String(t.from)===String(id)||String(t.to)===String(id));
+    if(used){
+      alert('Rekening "'+(a.name||'')+'" masih memiliki transaksi. Hapus/revisi transaksi rekening tersebut terlebih dahulu agar riwayat keuangan tidak rusak.');
+      return;
+    }
+    if((data.accounts||[]).length<=1){alert('Minimal harus ada satu rekening.');return;}
+    if(confirm('Hapus rekening "'+(a.name||'')+'"?\\nRekening ini akan dihapus dari daftar.')){
+      const wasActive=String(document.getElementById('viewAccount')?.value)===String(id);
+      data.accounts=data.accounts.filter(x=>String(x.id)!==String(id));
+      if(typeof save==='function')save();
+      if(wasActive && data.accounts.length) document.getElementById('viewAccount').value=String(data.accounts[0].id);
+      if(typeof render==='function')render();
+      alert('Rekening berhasil dihapus.');
+    }
+  };
+  document.getElementById('closeAccountEdit').onclick=document.getElementById('cancelAccountEdit').onclick=function(){
+    document.getElementById('accountEditModal').style.display='none';
+  };
+  document.getElementById('saveAccountEdit').onclick=function(){
+    const a=acct(document.getElementById('editAccountId').value); if(!a)return;
+    const name=document.getElementById('editAccountName').value.trim();
+    const opening=Number(document.getElementById('editAccountOpening').value)||0;
+    if(!name){alert('Nama rekening wajib diisi.');return;} if((data.accounts||[]).some(x=>String(x.id)!==String(a.id)&&String(x.name).trim().toLowerCase()===name.toLowerCase())){alert('Nama rekening tersebut sudah digunakan.');return;}
+    if(name.toLowerCase()==='cash'){alert('Rekening Cash tidak digunakan.');return;}
+    a.name=name;a.opening=opening;
+    if(typeof save==='function')save();
+    if(typeof render==='function')render();
+    document.getElementById('accountEditModal').style.display='none';
+    alert('Rekening berhasil diperbarui.');
+  };
+})();
+</script>
+<script>document.addEventListener('DOMContentLoaded',function(){try{if(typeof render==='function')render();}catch(e){console.error(e)}});</script></body></html>
