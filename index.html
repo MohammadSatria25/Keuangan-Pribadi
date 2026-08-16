@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Keuangan Pribadi</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e5e7eb;--primary:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#ea580c}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;position:sticky;top:0;z-index:5}
+.brand{font-size:22px;font-weight:800}.sub{color:var(--muted);font-size:13px;margin-top:4px}
+.container{max-width:1250px;margin:auto;padding:24px}
+.toolbar{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin-bottom:20px}
+button,.filebtn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+button.danger{color:var(--red)}button:hover,.filebtn:hover{filter:brightness(.97)}
+input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--text)}
+label{font-size:13px;color:var(--muted);display:block}.field{display:flex;flex-direction:column;gap:6px}
+.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 2px 8px #00000008}
+.metric .label{font-size:13px;color:var(--muted)}.metric .value{font-size:23px;font-weight:800;margin-top:8px}.green{color:var(--green)}.red{color:var(--red)}
+.section{margin-top:20px}.section h2{font-size:17px;margin:0 0 12px}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.formgrid{grid-template-columns:repeat(4,1fr)}.formgrid .wide{grid-column:span 2}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:700}td.num,th.num{text-align:right}
+.account{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}.account:last-child{border:0}
+.barrow{margin:12px 0}.barhead{display:flex;justify-content:space-between;font-size:13px}.bar{height:10px;background:#eef2f7;border-radius:20px;overflow:hidden;margin-top:6px}.fill{height:100%;background:var(--primary);border-radius:20px}
+.kpi{display:flex;gap:10px;flex-wrap:wrap}.badge{padding:8px 11px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700}
+#toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:12px 15px;border-radius:10px;display:none;z-index:20}
+.empty{text-align:center;color:var(--muted);padding:24px}.small{font-size:12px;color:var(--muted)}
+.preview{display:none;background:#f8fafc;border:1px dashed var(--line);padding:14px;border-radius:10px;margin-top:12px}
+@media(max-width:900px){.cards,.two,.formgrid{grid-template-columns:1fr 1fr}.formgrid .wide{grid-column:span 1}}
+@media(max-width:600px){.cards,.two,.formgrid{grid-template-columns:1fr}.container{padding:14px}header{padding:14px}.formgrid .wide{grid-column:span 1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="container" style="padding:0">
+    <div class="brand">Keuangan Pribadi</div>
+    <div class="sub">Dashboard pemasukan, pengeluaran, rekening, piutang, tabungan, dan laporan</div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="toolbar">
+    <div>
+      <label>Bulan laporan</label>
+      <input id="period" type="month" style="width:180px;margin-top:6px">
+    </div>
+    <div class="actions">
+      <button id="exportExcel">Export Excel</button>
+      <button id="exportPdf">Export PDF</button>
+      <button id="backup">Backup Data</button>
+      <label class="filebtn">Restore Data<input id="restore" type="file" accept=".json" hidden></label>
+    </div>
+  </div>
+
+  <div class="grid cards">
+    <div class="card metric"><div class="label">Saldo seluruh rekening</div><div id="saldo" class="value">Rp0</div></div>
+    <div class="card metric"><div class="label">Pemasukan bulan ini</div><div id="income" class="value green">Rp0</div></div>
+    <div class="card metric"><div class="label">Pengeluaran bulan ini</div><div id="expense" class="value red">Rp0</div></div>
+    <div class="card metric"><div class="label">Piutang belum lunas</div><div id="receivable" class="value">Rp0</div></div>
+  </div>
+
+  <div class="grid two section">
+    <section class="card">
+      <h2>Rekening</h2>
+      <div id="accounts"></div>
+      <div class="grid formgrid" style="margin-top:12px">
+        <div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / Cash / E-Wallet"></div>
+        <div class="field"><label>Saldo awal</label><input id="accBalance" type="number" min="0" value="0"></div>
+        <div style="display:flex;align-items:end"><button class="primary" id="addAccount" style="width:100%">+ Tambah</button></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Analisis otomatis</h2>
+      <div id="analysis" class="small">Belum ada transaksi.</div>
+      <div class="kpi" id="badges" style="margin-top:14px"></div>
+    </section>
+  </div>
+
+  <section class="card section">
+    <h2>Tambah transaksi</h2>
+    <div class="grid formgrid">
+      <div class="field"><label>Tanggal</label><input id="txDate" type="date"></div>
+      <div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div>
+      <div class="field"><label>Kategori</label><select id="txCategory"></select></div>
+      <div class="field"><label>Rekening</label><select id="txAccount"></select></div>
+      <div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div>
+      <div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div>
+      <div style="display:flex;align-items:end"><button class="primary" id="addTx" style="width:100%">Simpan transaksi</button></div>
+    </div>
+    <div class="small" style="margin-top:10px">Transfer antar rekening hanya memindahkan saldo dan tidak dihitung sebagai pemasukan/pengeluaran.</div>
+  </section>
+
+  <div class="grid two section">
+    <section class="card">
+      <h2>Diagram pengeluaran berdasarkan kategori</h2>
+      <div id="expenseChart"></div>
+    </section>
+    <section class="card">
+      <h2>Pemasukan vs pengeluaran</h2>
+      <div id="compareChart"></div>
+    </section>
+  </div>
+
+  <section class="card section">
+    <h2>Anggaran bulanan</h2>
+    <div class="grid formgrid">
+      <div class="field"><label>Kategori</label><select id="budgetCategory"></select></div>
+      <div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div>
+      <div style="display:flex;align-items:end"><button id="saveBudget" style="width:100%">Simpan anggaran</button></div>
+    </div>
+    <div id="budgetList" style="margin-top:15px"></div>
+  </section>
+
+  <section class="card section">
+    <h2>Piutang / uang yang dipinjam orang</h2>
+    <div class="grid formgrid">
+      <div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div>
+      <div class="field"><label>Jumlah</label><input id="debtAmount" type="number" min="0"></div>
+      <div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div>
+      <div style="display:flex;align-items:end"><button id="addDebt" style="width:100%">+ Tambah piutang</button></div>
+    </div>
+    <div style="overflow:auto;margin-top:15px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div>
+  </section>
+
+  <section class="card section">
+    <h2>Upload foto struk — fitur pintar</h2>
+    <p class="small">Sistem mencoba membaca toko, tanggal, total, dan teks struk menggunakan OCR. Selalu periksa hasil sebelum menyimpan karena kualitas foto dan format struk dapat memengaruhi hasil.</p>
+    <div class="actions" style="margin-top:10px">
+      <label class="filebtn">Pilih foto struk<input id="receiptFile" type="file" accept="image/*" hidden></label>
+      <button id="scanReceipt">Analisis struk</button>
+    </div>
+    <div id="ocrStatus" class="small" style="margin-top:10px"></div>
+    <div id="receiptPreview" class="preview">
+      <div class="grid formgrid">
+        <div class="field"><label>Toko</label><input id="rStore"></div>
+        <div class="field"><label>Tanggal</label><input id="rDate" type="date"></div>
+        <div class="field"><label>Total</label><input id="rTotal" type="number"></div>
+        <div class="field"><label>Kategori</label><select id="rCategory"></select></div>
+      </div>
+      <div class="small" style="margin-top:10px">Teks OCR:</div>
+      <pre id="ocrText" style="white-space:pre-wrap;max-height:180px;overflow:auto;background:#fff;padding:10px;border-radius:8px"></pre>
+      <button class="primary" id="saveReceipt" style="margin-top:10px">Simpan sebagai pengeluaran</button>
+    </div>
+  </section>
+
+  <section class="card section">
+    <h2>Transaksi bulan terpilih</h2>
+    <div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Rekening</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div>
+  </section>
+</main>
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const KEY='keuangan_pribadi_v1';
+const categories=['Makanan','Transportasi','Rumah','Tagihan','Belanja','Hiburan','Cicilan','Kesehatan','Pendidikan','Keluarga','Tabungan/Investasi','Lain-lain'];
+let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
+ accounts:[{id:1,name:'Cash',opening:0}],
+ transactions:[], debts:[], budgets:{}
+};
+let receiptFile=null, scanned={};
+const $=id=>document.getElementById(id);
+const rp=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(Number(n)||0);
+const today=new Date();
+$('period').value=today.toISOString().slice(0,7);
+$('txDate').value=today.toISOString().slice(0,10);
+function save(){localStorage.setItem(KEY,JSON.stringify(data));}
+function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}
+function options(el,arr){$(el).innerHTML=arr.map(x=>'<option value="'+x+'">'+x+'</option>').join('')}
+options('txCategory',categories);options('budgetCategory',categories);options('rCategory',categories);
+function monthTx(){return data.transactions.filter(t=>t.date.slice(0,7)===$('period').value)}
+function accountBalance(a){
+ let b=Number(a.opening)||0;
+ data.transactions.forEach(t=>{
+  if(t.type==='income'&&t.accountId===a.id)b+=t.amount;
+  if(t.type==='expense'&&t.accountId===a.id)b-=t.amount;
+  if(t.type==='transfer'&&t.from===a.id)b-=t.amount;
+  if(t.type==='transfer'&&t.to===a.id)b+=t.amount;
+ });
+ return b;
+}
+function renderAccounts(){
+ $('accounts').innerHTML=data.accounts.map(a=>`<div class="account"><span>${esc(a.name)}</span><strong>${rp(accountBalance(a))}</strong></div>`).join('')||'<div class="empty">Belum ada rekening.</div>';
+ $('txAccount').innerHTML=data.accounts.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
+}
+function render(){
+ renderAccounts();
+ const mt=monthTx(), inc=mt.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0), exp=mt.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+ $('saldo').textContent=rp(data.accounts.reduce((s,a)=>s+accountBalance(a),0));
+ $('income').textContent=rp(inc); $('expense').textContent=rp(exp);
+ $('receivable').textContent=rp(data.debts.reduce((s,d)=>s+Math.max(0,d.amount-d.paid),0));
+ renderTransactions(mt);renderDebts();renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
+}
+function renderTransactions(mt){
+ $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><button class="danger" onclick="deleteTx('${t.id}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
+}
+function renderDebts(){
+ $('debtTable').innerHTML=data.debts.length?data.debts.map(d=>`<tr><td>${esc(d.name)}</td><td>${rp(d.amount)}</td><td><input type="number" min="0" value="${d.paid}" style="width:120px" onchange="payDebt('${d.id}',this.value)"></td><td>${rp(Math.max(0,d.amount-d.paid))}</td><td>${d.due||'-'}</td><td><button class="danger" onclick="deleteDebt('${d.id}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="6" class="empty">Belum ada piutang.</td></tr>';
+}
+function renderCharts(mt,inc,exp){
+ const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);
+ const rows=Object.entries(by).sort((a,b)=>b[1]-a[1]), max=rows[0]?.[1]||1;
+ $('expenseChart').innerHTML=rows.length?rows.map(([k,v])=>`<div class="barrow"><div class="barhead"><span>${esc(k)}</span><b>${rp(v)}</b></div><div class="bar"><div class="fill" style="width:${v/max*100}%"></div></div></div>`).join(''):'<div class="empty">Belum ada pengeluaran.</div>';
+ const max2=Math.max(inc,exp,1);
+ $('compareChart').innerHTML=`<div class="barrow"><div class="barhead"><span>Pemasukan</span><b>${rp(inc)}</b></div><div class="bar"><div class="fill" style="width:${inc/max2*100}%"></div></div></div><div class="barrow"><div class="barhead"><span>Pengeluaran</span><b>${rp(exp)}</b></div><div class="bar"><div class="fill" style="width:${exp/max2*100}%"></div></div></div><div class="small" style="margin-top:18px">Sisa bulan ini: <b>${rp(inc-exp)}</b></div>`;
+}
+function renderBudgets(mt){
+ const actual={};mt.filter(t=>t.type==='expense').forEach(t=>actual[t.category]=(actual[t.category]||0)+t.amount);
+ const keys=Object.keys(data.budgets);
+ $('budgetList').innerHTML=keys.length?keys.map(k=>{const target=data.budgets[k],a=actual[k]||0,p=Math.min(100,target?a/target*100:0);return `<div class="barrow"><div class="barhead"><span>${esc(k)}</span><span>${rp(a)} / ${rp(target)}</span></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`}).join(''):'<div class="small">Belum ada anggaran.</div>';
+}
+function renderAnalysis(mt,inc,exp){
+ const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);
+ const top=Object.entries(by).sort((a,b)=>b[1]-a[1])[0];
+ const rate=inc?exp/inc*100:0;
+ $('analysis').innerHTML=top?`Pengeluaran terbesar bulan ini adalah <b>${esc(top[0])}</b> sebesar <b>${rp(top[1])}</b>. Rasio pengeluaran terhadap pemasukan <b>${rate.toFixed(1)}%</b>. ${rate>80?'Perlu perhatian: pengeluaran sudah mendekati pemasukan.':rate>60?'Masih aman, tetapi beberapa kategori dapat dievaluasi.':'Kondisi arus kas bulan ini cukup baik.'}`:'Masukkan transaksi untuk mendapatkan analisis otomatis.';
+ $('badges').innerHTML=`<span class="badge">Pemasukan ${rp(inc)}</span><span class="badge">Pengeluaran ${rp(exp)}</span><span class="badge">Selisih ${rp(inc-exp)}</span>`;
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('addAccount').onclick=()=>{const name=$('accName').value.trim();if(!name)return toast('Nama rekening belum diisi');data.accounts.push({id:Date.now(),name,opening:Number($('accBalance').value)||0});$('accName').value='';$('accBalance').value=0;save();render();toast('Rekening ditambahkan')};
+$('addTx').onclick=()=>{
+ const amount=Number($('txAmount').value);if(!amount)return toast('Nominal belum diisi');
+ const type=$('txType').value, accountId=Number($('txAccount').value);
+ if(type==='transfer'){
+  const to=prompt('Masukkan ID rekening tujuan. ID rekening dapat dilihat melalui Backup Data atau gunakan rekening berikut: '+data.accounts.map(a=>a.id+'='+a.name).join(', '));
+  if(!to||Number(to)===accountId)return toast('Rekening tujuan tidak valid');
+  data.transactions.push({id:Date.now(),date:$('txDate').value,type,category:'Transfer',accountId,from:accountId,to:Number(to),amount,note:$('txNote').value});
+ }else data.transactions.push({id:Date.now(),date:$('txDate').value,type,category:$('txCategory').value,accountId,amount,note:$('txNote').value});
+ $('txAmount').value='';$('txNote').value='';save();render();toast('Transaksi disimpan');
+};
+window.deleteTx=id=>{if(confirm('Hapus transaksi ini?')){data.transactions=data.transactions.filter(t=>String(t.id)!==String(id));save();render()}};
+$('addDebt').onclick=()=>{const name=$('debtName').value.trim(),amount=Number($('debtAmount').value);if(!name||!amount)return toast('Nama dan jumlah wajib diisi');data.debts.push({id:Date.now(),name,amount,paid:0,due:$('debtDue').value});$('debtName').value='';$('debtAmount').value='';$('debtDue').value='';save();render();toast('Piutang ditambahkan')};
+window.payDebt=(id,v)=>{const d=data.debts.find(x=>String(x.id)===String(id));if(d)d.paid=Math.min(d.amount,Math.max(0,Number(v)||0));save();render()};
+window.deleteDebt=id=>{if(confirm('Hapus piutang ini?')){data.debts=data.debts.filter(d=>String(d.id)!==String(id));save();render()}};
+$('saveBudget').onclick=()=>{const k=$('budgetCategory').value,v=Number($('budgetAmount').value)||0;data.budgets[k]=v;save();render();toast('Anggaran disimpan')};
+$('period').onchange=render;
+
+$('receiptFile').onchange=e=>{receiptFile=e.target.files[0]||null;$('ocrStatus').textContent=receiptFile?'Foto siap dianalisis. Klik "Analisis struk".':''};
+$('scanReceipt').onclick=async()=>{
+ if(!receiptFile)return toast('Pilih foto struk terlebih dahulu');
+ $('ocrStatus').textContent='Sedang membaca struk...';$('scanReceipt').disabled=true;
+ try{
+  const result=await Tesseract.recognize(receiptFile,'eng',{logger:m=>{if(m.status==='recognizing text')$('ocrStatus').textContent='OCR '+Math.round((m.progress||0)*100)+'%'}});
+  const text=result.data.text||''; scanned.text=text;
+  const lines=text.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+  scanned.store=lines[0]||'';
+  const dm=text.match(/(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})/);scanned.date=dm?`${dm[1]}-${String(dm[2]).padStart(2,'0')}-${String(dm[3]).padStart(2,'0')}`:today.toISOString().slice(0,10);
+  let tm=text.match(/(?:TOTAL|GRAND TOTAL|JUMLAH|TOTAL BELANJA)\D{0,20}([0-9][0-9.,]*)/i);
+  if(!tm){const nums=[...text.matchAll(/[0-9][0-9.,]{3,}/g)].map(m=>m[0]);tm=nums.length?['',nums[nums.length-1]]:null}
+  scanned.total=tm?Number(tm[1].replace(/\./g,'').replace(/,/g,''))||0:0;
+  $('rStore').value=scanned.store;$('rDate').value=scanned.date;$('rTotal').value=scanned.total;$('ocrText').textContent=text;$('receiptPreview').style.display='block';$('ocrStatus').textContent='Selesai. Periksa hasil sebelum disimpan.';
+ }catch(e){$('ocrStatus').textContent='OCR gagal. Silakan masukkan data secara manual.'}
+ $('scanReceipt').disabled=false;
+};
+$('saveReceipt').onclick=()=>{const amount=Number($('rTotal').value);if(!amount)return toast('Total struk belum terbaca');data.transactions.push({id:Date.now(),date:$('rDate').value||today.toISOString().slice(0,10),type:'expense',category:$('rCategory').value,accountId:Number($('txAccount').value),amount,note:'Struk - '+($('rStore').value||'Pembelian')});save();render();$('receiptPreview').style.display='none';$('receiptFile').value='';receiptFile=null;toast('Struk disimpan sebagai pengeluaran')};
+
+$('backup').onclick=()=>{download('backup_keuangan.json','application/json',JSON.stringify(data,null,2));toast('Backup dibuat')};
+$('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();render();toast('Data berhasil dipulihkan')}catch{toast('File backup tidak valid')}};r.readAsText(f)};
+
+$('exportExcel').onclick=()=>{
+ if(typeof XLSX==='undefined')return toast('Library Excel belum termuat. Periksa koneksi internet.');
+ const month=$('period').value,mt=monthTx();
+ const rows=mt.map(t=>({Tanggal:t.date,Jenis:t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer',Kategori:t.category,Rekening:data.accounts.find(a=>a.id===t.accountId)?.name||'',Keterangan:t.note||'',Nominal:t.amount}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Transaksi');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.accounts.map(a=>({Rekening:a.name,SaldoAwal:a.opening,SaldoSaatIni:accountBalance(a)}))),'Rekening');
+ XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.debts.map(d=>({Nama:d.name,Jumlah:d.amount,Dibayar:d.paid,Sisa:Math.max(0,d.amount-d.paid),JatuhTempo:d.due||''}))),'Piutang');
+ XLSX.writeFile(wb,'Laporan_Keuangan_'+month+'.xlsx');
+};
+$('exportPdf').onclick=()=>{
+ if(!window.jspdf)return toast('Library PDF belum termuat. Periksa koneksi internet.');
+ const {jsPDF}=window.jspdf,doc=new jsPDF(),month=$('period').value,mt=monthTx(),inc=mt.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),exp=mt.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+ doc.setFontSize(18);doc.text('Laporan Keuangan Pribadi',14,18);doc.setFontSize(11);doc.text('Periode: '+month,14,27);
+ doc.text('Pemasukan: '+rp(inc),14,40);doc.text('Pengeluaran: '+rp(exp),14,48);doc.text('Selisih: '+rp(inc-exp),14,56);
+ let y=70;doc.text('Saldo Rekening',14,y);y+=8;data.accounts.forEach(a=>{doc.text(a.name+': '+rp(accountBalance(a)),18,y);y+=7});
+ y+=5;doc.text('Pengeluaran per Kategori',14,y);y+=8;const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>{if(y>280){doc.addPage();y=20}doc.text(k+': '+rp(v),18,y);y+=7});
+ doc.save('Laporan_Keuangan_'+month+'.pdf');
+};
+function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+render();
+</script>
+</body>
+</html>
