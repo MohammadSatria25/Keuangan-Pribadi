@@ -12,56 +12,36 @@
 @media(max-width:520px){.account-grid{grid-template-columns:1fr}.filters{flex-direction:column;align-items:stretch}.pie-area{flex-direction:column}.pie{width:175px;height:175px}}
 </style>
 
-<style id="dashboard-enhancement">
-/* Dashboard visual enhancement */
-.dashboard-hero{
-  background:linear-gradient(135deg,#0f2d59 0%,#1758a8 52%,#2b7de9 100%);
-  color:#fff!important;border-radius:24px;padding:28px 30px;margin-bottom:20px;
-  box-shadow:0 14px 35px rgba(15,45,89,.18);position:relative;overflow:hidden
-}
-.dashboard-hero:after{
-  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
-  right:-70px;top:-90px;background:rgba(255,255,255,.10)
-}
-.dashboard-hero h1,.dashboard-hero h2,.dashboard-hero p{color:#fff!important;position:relative;z-index:1}
-.dashboard-controls{
-  background:#fff;border:1px solid #e4ebf5;border-radius:18px;padding:14px;
-  box-shadow:0 8px 24px rgba(22,53,92,.07)
-}
-.kpi-grid-enhanced{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:18px 0}
-.kpi-card-enhanced{border:0!important;border-radius:20px!important;padding:20px!important;
- box-shadow:0 10px 26px rgba(22,53,92,.10)!important;position:relative;overflow:hidden}
-.kpi-card-enhanced:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
-.kpi-saldo:before{background:#2563eb}.kpi-income:before{background:#10b981}.kpi-expense:before{background:#ef4444}
-.kpi-card-enhanced .kpi-label{font-size:13px;font-weight:800;letter-spacing:.4px;color:#64748b}
-.kpi-card-enhanced .kpi-value{font-size:28px;font-weight:900;margin-top:7px}
-.kpi-saldo .kpi-value{color:#2563eb}.kpi-income .kpi-value{color:#059669}.kpi-expense .kpi-value{color:#dc2626}
-.charts-grid-enhanced{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
-.chart-card-enhanced{background:#fff;border:1px solid #e6edf6;border-radius:22px;padding:20px;
- box-shadow:0 10px 28px rgba(22,53,92,.08)}
-.chart-card-enhanced h3{margin:0 0 4px;color:#102a43;font-size:18px}
-.chart-card-enhanced .chart-sub{color:#7b8ba1;font-size:12px;margin-bottom:12px}
-.chart-wrap-enhanced{height:280px;position:relative}
-.chart-wrap-enhanced canvas{max-width:100%;max-height:100%}
-.empty-chart{height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;
- background:#f8fafc;border-radius:16px}
-@media(max-width:800px){
- .kpi-grid-enhanced,.charts-grid-enhanced{grid-template-columns:1fr}
-}
-</style>
 
-<style id="hide-dashboard-accounts">
-/* The dashboard no longer shows the account-card list. Account management remains in the Rekening menu. */
-#accounts,.dashboard-accounts,#dashboardAccounts{display:none!important}
+<style id="dashboard-clean-final">
+#view-dashboard{width:100%;box-sizing:border-box}
+#view-dashboard .dash-hero{background:linear-gradient(135deg,#12305d 0%,#1d5eb3 58%,#3f8ce8 100%);border-radius:22px;padding:27px 30px;margin-bottom:17px;color:#fff;box-shadow:0 12px 30px rgba(21,58,103,.16);position:relative;overflow:hidden}
+#view-dashboard .dash-hero:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;right:-70px;top:-90px;background:rgba(255,255,255,.10)}
+#view-dashboard .dash-eyebrow{font-size:12px;font-weight:900;letter-spacing:1.5px;opacity:.92}
+#view-dashboard .dash-title{font-size:31px;font-weight:900;line-height:1.15;margin-top:5px}
+#view-dashboard .dash-subtitle{font-size:14px;margin-top:8px;color:#eaf3ff}
+#view-dashboard .dash-filter{display:grid;grid-template-columns:1fr 1fr;gap:15px;background:#fff;border:1px solid #e1e9f3;border-radius:18px;padding:16px 18px;margin-bottom:17px;box-shadow:0 7px 22px rgba(24,54,89,.07)}
+#view-dashboard .dash-filter .field{margin:0}
+#view-dashboard .dash-filter label{font-size:12px;font-weight:800;color:#66778c;display:block;margin-bottom:7px}
+#view-dashboard .dash-filter select,#view-dashboard .dash-filter input{width:100%;box-sizing:border-box;border:1px solid #dbe5f1;border-radius:11px;background:#fff;padding:11px 12px;font-size:15px;color:#17304f}
+#view-dashboard .dash-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:17px}
+#view-dashboard .dash-kpi{background:#fff;border:1px solid #e3ebf5;border-radius:19px;padding:20px 22px;box-shadow:0 9px 25px rgba(24,54,89,.08);position:relative;overflow:hidden}
+#view-dashboard .dash-kpi:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+#view-dashboard .dash-blue:before{background:#2563eb}.dash-green:before{background:#10b981}.dash-red:before{background:#ef4444}
+#view-dashboard .dash-kpi-label{font-size:12px;font-weight:900;color:#718096;letter-spacing:.5px}
+#view-dashboard .dash-kpi-value{font-size:28px;font-weight:900;margin-top:7px}
+#view-dashboard .dash-blue .dash-kpi-value{color:#2563eb}#view-dashboard .dash-green .dash-kpi-value{color:#059669}#view-dashboard .dash-red .dash-kpi-value{color:#dc2626}
+#view-dashboard .dash-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+#view-dashboard .dash-chart-card{background:#fff;border:1px solid #e3ebf5;border-radius:20px;padding:18px;box-shadow:0 9px 25px rgba(24,54,89,.07)}
+#view-dashboard .dash-chart-head h2{margin:0;font-size:17px;color:#152e4c}.dash-chart-head p{margin:5px 0 0;font-size:12px;color:#8190a4}
+#view-dashboard .dash-chart-box{height:285px;position:relative;margin-top:10px}#view-dashboard .dash-chart-box canvas{width:100%!important;height:100%!important}
+#view-dashboard .dash-empty{position:absolute;inset:0;display:none;align-items:center;justify-content:center;border-radius:14px;background:#f8fafc;color:#94a3b8}
+#view-dashboard .dash-summary{margin-top:17px}.dash-summary-card{background:#fff;border:1px solid #e3ebf5;border-radius:18px;padding:18px;box-shadow:0 8px 22px rgba(24,54,89,.06)}.dash-summary-title{font-weight:900;color:#17304f;margin-bottom:8px}
+@media(max-width:900px){#view-dashboard .dash-kpis,#view-dashboard .dash-charts{grid-template-columns:1fr}}@media(max-width:650px){#view-dashboard .dash-filter{grid-template-columns:1fr}#view-dashboard .dash-title{font-size:26px}}
 </style>
-</head>
+<style id="dashboard-no-account-cards">#view-dashboard #accounts{display:none!important}</style></head>
 <body>
-<div id="enhancedDashboard" class="dashboard-enhanced">
-  <div class="dashboard-hero">
-    <h1 style="margin:0 0 6px">Ringkasan Keuangan</h1>
-    <p style="margin:0;opacity:.92">Pantau kondisi keuangan rekening aktif secara cepat dan mudah.</p>
-  </div>
-  <div class="dashboard-controls" id="enhancedDashboardControls">
+<div class="dashboard-controls" id="enhancedDashboardControls">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div><label style="font-weight:800">Rekening Aktif</label><div id="enhancedAccountName" style="font-size:16px;font-weight:800;margin-top:6px">-</div></div>
       <div><label style="font-weight:800">Periode</label><div id="enhancedPeriodName" style="font-size:16px;font-weight:800;margin-top:6px">-</div></div>
@@ -107,18 +87,33 @@
 
 <main class="main">
 <section id="view-dashboard" class="view active">
-<div class="header"><div><div class="eyebrow">Dashboard</div><div class="title">Ringkasan Keuangan</div><div class="subtitle">Informasi umum rekening yang sedang dipilih.</div></div>
-<div class="filters"><div class="field"><label>Rekening Aktif</label><select id="viewAccount"></select></div><div class="field"><label>Bulan</label><input id="period" type="month"></div></div></div>
-<div class="grid kpis">
-<div class="card kpi blue"><span class="kpi-icon">💰</span><span class="kpi-label">TOTAL SALDO</span><div id="saldo" class="kpi-value">Rp0</div></div>
-<div class="card kpi green"><span class="kpi-icon">↗️</span><span class="kpi-label">PEMASUKAN</span><div id="income" class="kpi-value">Rp0</div></div>
-<div class="card kpi red"><span class="kpi-icon">↘️</span><span class="kpi-label">PENGELUARAN</span><div id="expense" class="kpi-value">Rp0</div></div>
+<div class="dash-hero">
+  <div class="dash-eyebrow">DASHBOARD</div>
+  <div class="dash-title">Ringkasan Keuangan</div>
+  <div class="dash-subtitle">Informasi keuangan rekening aktif secara cepat dan mudah.</div>
 </div>
-<section class="card section"><div class="section-title"><h2>🏦 Rekening</h2><span class="muted">Pilih kartu atau gunakan Edit/Hapus</span></div><div id="accounts" class="account-grid"></div><div class="notice" style="margin-top:12px">💡 Rekening yang sudah ada akan langsung muncul saat website dibuka. Gunakan <b>Edit</b> untuk memperbaiki nama/saldo awal atau <b>Hapus</b> untuk menghapus rekening yang tidak digunakan.</div></section>
-<div class="grid two section">
-<section class="card"><div class="section-title"><h2>🥧 Pengeluaran per Kategori</h2><span class="muted">Bulan & rekening aktif</span></div><div id="expensePie" class="pie-area"></div></section>
-<section class="card"><div class="section-title"><h2>📌 Ringkasan</h2><span class="muted">Informasi umum</span></div><div id="analysis" class="muted">Belum ada data.</div><div id="badges" class="badges" style="margin-top:12px"></div></section>
+<div class="dash-filter">
+  <div class="field"><label>Rekening Aktif</label><select id="viewAccount"></select></div>
+  <div class="field"><label>Bulan</label><input id="period" type="month"></div>
 </div>
+<div class="dash-kpis">
+  <div class="dash-kpi dash-blue"><div class="dash-kpi-label">TOTAL SALDO</div><div id="saldo" class="dash-kpi-value">Rp0</div></div>
+  <div class="dash-kpi dash-green"><div class="dash-kpi-label">PEMASUKAN</div><div id="income" class="dash-kpi-value">Rp0</div></div>
+  <div class="dash-kpi dash-red"><div class="dash-kpi-label">PENGELUARAN</div><div id="expense" class="dash-kpi-value">Rp0</div></div>
+</div>
+<div class="dash-charts">
+  <section class="dash-chart-card">
+    <div class="dash-chart-head"><h2>🟢 Pemasukan Berdasarkan Kategori</h2><p>Rekening aktif dan bulan yang dipilih</p></div>
+    <div class="dash-chart-box"><canvas id="incomeCategoryChart"></canvas><div id="incomeCategoryEmpty" class="dash-empty">Belum ada pemasukan pada periode ini.</div></div>
+  </section>
+  <section class="dash-chart-card">
+    <div class="dash-chart-head"><h2>🔴 Pengeluaran Berdasarkan Kategori</h2><p>Rekening aktif dan bulan yang dipilih</p></div>
+    <div class="dash-chart-box"><canvas id="expenseCategoryChart"></canvas><div id="expenseCategoryEmpty" class="dash-empty">Belum ada pengeluaran pada periode ini.</div></div>
+  </section>
+</div>
+<section class="dash-summary">
+  <div class="dash-summary-card"><div class="dash-summary-title">📌 Ringkasan Bulan Ini</div><div id="analysis" class="muted">Belum ada data.</div><div id="badges" class="badges" style="margin-top:12px"></div></div>
+</section>
 </section>
 
 <section id="view-transaksi" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Transaksi</div><div class="subtitle">Pemasukan, pengeluaran, dan transfer untuk rekening aktif.</div></div></div>
