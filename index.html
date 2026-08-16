@@ -24,7 +24,7 @@
 <a href="#anggaran"><span class="nav-icon">🎯</span><span>Anggaran</span></a>
 <a href="#piutang"><span class="nav-icon">👥</span><span>Piutang</span></a>
 <a href="#struk"><span class="nav-icon">🧾</span><span>Scan Struk</span></a>
-<a href="#laporan"><span class="nav-icon">📊</span><span>Laporan</span></a>
+<a href="#monitoring"><span class="nav-icon">👁️</span><span>Monitoring</span></a><a href="#laporan"><span class="nav-icon">📊</span><span>Laporan</span></a>
 </nav>
 <div class="nav-title">Sistem</div><nav class="nav"><a href="#backup"><span class="nav-icon">💾</span><span>Backup Data</span></a></nav>
 <div class="sidebar-bottom"><div class="mini-card">💡 <b>Catatan</b>Gunakan satu transaksi untuk setiap pemasukan atau pengeluaran agar analisis akurat.</div></div>
@@ -47,11 +47,36 @@
 <div class="grid two section"><section class="card"><div class="section-title"><h2>📊 Komposisi pengeluaran</h2><span class="muted">Berdasarkan kategori</span></div><div id="expenseChart" class="chart-wrap"></div></section><section class="card"><div class="section-title"><h2>📈 Arus kas</h2><span class="muted">Pemasukan vs pengeluaran</span></div><div id="compareChart" class="chart-wrap"></div></section></div>
 <section class="card section" id="transaksi"><div class="section-title"><h2>💸 Tambah transaksi</h2><span class="muted">Pilih rekening dulu — pemasukan & pengeluaran dicatat terpisah per rekening</span></div><div class="grid formgrid"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening transaksi</label><select id="txAccount"></select></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div><div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></section>
 <section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section>
-<section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section>
+<section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div class="field wide"><label>Keterangan / Keperluan</label><input id="debtNote" placeholder="Contoh: biaya sekolah / kebutuhan keluarga"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Keterangan / Keperluan</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section>
 <section class="card section receipt" id="struk"><div class="section-title"><h2>🧾 Scan struk pintar</h2><span class="badge">OCR</span></div><p class="muted">Upload foto struk untuk mencoba membaca toko, tanggal, total, dan teks pembelian secara otomatis. Periksa hasil sebelum menyimpan.</p><div class="actions"><label class="filebtn">📷 Pilih foto struk<input id="receiptFile" type="file" accept="image/*"></label><button class="btn primary" id="scanReceipt">✨ Analisis struk</button></div><div id="ocrStatus" class="muted" style="margin-top:10px"></div><div id="receiptPreview" class="hidden" style="margin-top:14px"><div class="grid formgrid"><div class="field"><label>Toko</label><input id="rStore"></div><div class="field"><label>Tanggal</label><input id="rDate" type="date"></div><div class="field"><label>Total</label><input id="rTotal" type="number"></div><div class="field"><label>Kategori</label><select id="rCategory"></select></div></div><div class="muted" style="margin-top:10px">Teks hasil OCR</div><pre id="ocrText" style="white-space:pre-wrap;max-height:170px;overflow:auto;background:#fff;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:11px"></pre><button class="btn primary" id="saveReceipt">Simpan sebagai pengeluaran</button></div></section>
+
+<section class="card section" id="monitoring">
+  <div class="section-title"><h2>👁️ Monitoring Laporan Keuangan</h2><span class="muted">Preview real-time • mengikuti rekening aktif & periode</span></div>
+  <div class="notice" style="margin-bottom:12px">Data di bawah otomatis berubah setiap kali transaksi ditambah, diedit, atau dihapus.</div>
+  <div style="overflow:auto">
+    <table><thead><tr>
+      <th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th>
+    </tr></thead><tbody id="monitorTable"></tbody></table>
+  </div>
+</section>
 <section class="card section" id="laporan"><div class="section-title"><h2>📋 Transaksi bulan terpilih</h2><span class="muted">Data detail laporan</span></div><div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Rekening</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div></section>
 <section class="section" id="backup"><div class="notice">🔐 <b>Privasi:</b> versi ini menyimpan data di browser perangkat. Jangan gunakan sebagai penyimpanan utama sampai database online Supabase kita pasang.</div><div class="actions" style="margin-top:10px"><button class="btn" id="backup">💾 Backup Data</button><label class="filebtn">↩️ Restore Data<input id="restore" type="file" accept=".json"></label></div></section>
 
+
+<div id="debtEditModal" style="display:none;position:fixed;inset:0;background:#0b1d3b88;z-index:41;align-items:center;justify-content:center;padding:18px">
+ <div class="card" style="width:min(620px,100%)">
+  <div class="section-title"><h2>✏️ Edit Piutang</h2><button class="btn" id="closeDebtEdit">Tutup</button></div>
+  <input id="editDebtId" type="hidden">
+  <div class="grid formgrid">
+   <div class="field"><label>Nama</label><input id="editDebtName"></div>
+   <div class="field"><label>Jumlah</label><input id="editDebtAmount" type="number"></div>
+   <div class="field"><label>Jatuh tempo</label><input id="editDebtDue" type="date"></div>
+   <div class="field wide"><label>Keterangan / Keperluan</label><input id="editDebtNote"></div>
+   <div class="field"><label>Sudah dibayar</label><input id="editDebtPaid" type="number" min="0"></div>
+  </div>
+  <div class="actions" style="justify-content:flex-end;margin-top:15px"><button class="btn" id="cancelDebtEdit">Batal</button><button class="btn primary" id="saveDebtEdit">💾 Simpan perubahan</button></div>
+ </div>
+</div>
 <!-- Modal edit transaksi -->
 <div id="editModal" style="display:none;position:fixed;inset:0;background:#0b1d3b88;z-index:40;align-items:center;justify-content:center;padding:18px">
   <div class="card" style="width:min(620px,100%);max-height:92vh;overflow:auto">
@@ -169,7 +194,7 @@ function render(){
  $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
  $('income').textContent=rp(inc); $('expense').textContent=rp(exp); $('receivable').textContent=rp(inc-exp);
  renderAccountRecap();
- renderTransactions(mt);renderDebts();renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
+ renderTransactions(mt);renderMonitoring(mt);renderDebts();renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
 }
 function renderAccountRecap(){
  const month=$('period').value;
@@ -185,15 +210,13 @@ function renderTransactions(mt){
  $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
 }
 function renderDebts(){
- $('debtTable').innerHTML=data.debts.length?data.debts.map(d=>`<tr><td>${esc(d.name)}</td><td>${rp(d.amount)}</td><td><input type="number" min="0" value="${d.paid}" style="width:120px" onchange="payDebt('${d.id}',this.value)"></td><td>${rp(Math.max(0,d.amount-d.paid))}</td><td>${d.due||'-'}</td><td><div class="actions"><button class="btn" onclick="editDebt('${d.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteDebt('${d.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="6" class="empty">Belum ada piutang.</td></tr>';
+ const rows=data.debts||[];
+ $('debtTable').innerHTML=rows.map(d=>{
+   const amount=Number(d.amount)||0, paid=Number(d.paid)||0, remain=Math.max(0,amount-paid);
+   return `<tr><td><b>${esc(d.name||'')}</b></td><td>${rp(amount)}</td><td>${rp(paid)}</td><td><b>${rp(remain)}</b></td><td>${esc(d.due||'-')}</td><td>${esc(d.note||'-')}</td><td><div class="actions"><button class="btn" onclick="editDebt('${d.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteDebt('${d.id}')">🗑️ Hapus</button></div></td></tr>`;
+ }).join('')||'<tr><td colspan="7" class="empty">Belum ada piutang.</td></tr>';
 }
-window.editDebt=id=>{
- const d=data.debts.find(x=>String(x.id)===String(id)); if(!d)return;
- $('debtName').value=d.name;$('debtAmount').value=d.amount;$('debtDue').value=d.due||'';
- document.getElementById('piutang').scrollIntoView({behavior:'smooth'});
- data.debts=data.debts.filter(x=>String(x.id)!==String(id));
- save();render();toast('Piutang siap direvisi, lalu tekan Tambah piutang');
-};
+
 function renderCharts(mt,inc,exp){
  const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);
  const rows=Object.entries(by).sort((a,b)=>b[1]-a[1]), max=rows[0]?.[1]||1;
@@ -239,6 +262,15 @@ $('addTx').onclick=()=>{
  $('txAmount').value='';$('txNote').value='';save();render();toast('Transaksi disimpan');
 };
 
+
+function renderMonitoring(mt){
+  const rows=(mt||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  $('monitorTable').innerHTML=rows.map(t=>{
+    const kind=t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer';
+    const color=t.type==='income'?'#16a34a':t.type==='expense'?'#ef4444':'#2563eb';
+    return `<tr><td>${esc(t.date||'')}</td><td style="color:${color};font-weight:800">${kind}</td><td>${esc(t.category||'-')}</td><td>${esc(t.note||'-')}</td><td class="num" style="font-weight:800">${rp(t.amount||0)}</td><td><div class="actions"><button class="btn" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`;
+  }).join('')||'<tr><td colspan="6" class="empty">Belum ada transaksi pada rekening/periode aktif.</td></tr>';
+}
 function fillEditOptions(){
   options('editCategory',categories);
   $('editAccount').innerHTML=activeAccounts().map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
@@ -284,7 +316,31 @@ $('saveEdit').onclick=()=>{
   save();render();$('editModal').style.display='none';toast('Perubahan transaksi disimpan');
 };
 
-$('addDebt').onclick=()=>{const name=$('debtName').value.trim(),amount=Number($('debtAmount').value);if(!name||!amount)return toast('Nama dan jumlah wajib diisi');data.debts.push({id:Date.now(),name,amount,paid:0,due:$('debtDue').value});$('debtName').value='';$('debtAmount').value='';$('debtDue').value='';save();render();toast('Piutang ditambahkan')};
+$('addDebt').onclick=()=>{
+ const name=$('debtName').value.trim(), amount=Number($('debtAmount').value)||0;
+ if(!name||!amount)return toast('Nama dan jumlah piutang wajib diisi');
+ data.debts=data.debts||[];data.debts.forEach(d=>{if(d.note===undefined)d.note=''});
+ data.debts.push({id:Date.now(),name,amount,paid:0,due:$('debtDue').value,note:$('debtNote').value.trim()});
+ save();renderDebts();$('debtName').value='';$('debtAmount').value='';$('debtDue').value='';$('debtNote').value='';toast('Piutang ditambahkan');
+};
+window.editDebt=id=>{
+ const d=(data.debts||[]).find(x=>String(x.id)===String(id)); if(!d)return;
+ $('editDebtId').value=d.id;$('editDebtName').value=d.name||'';$('editDebtAmount').value=d.amount||0;$('editDebtPaid').value=d.paid||0;$('editDebtDue').value=d.due||'';$('editDebtNote').value=d.note||'';
+ $('debtEditModal').style.display='flex';
+};
+window.deleteDebt=id=>{
+ if(confirm('Hapus data piutang ini?')){data.debts=data.debts.filter(x=>String(x.id)!==String(id));save();renderDebts();toast('Piutang dihapus')}
+};
+$('closeDebtEdit').onclick=$('cancelDebtEdit').onclick=()=>{$('debtEditModal').style.display='none'};
+$('debtEditModal').onclick=e=>{if(e.target.id==='debtEditModal')$('debtEditModal').style.display='none'};
+$('saveDebtEdit').onclick=()=>{
+ const d=(data.debts||[]).find(x=>String(x.id)===String($('editDebtId').value));if(!d)return;
+ const amount=Number($('editDebtAmount').value)||0,paid=Number($('editDebtPaid').value)||0;
+ if(!$('editDebtName').value.trim()||!amount)return toast('Nama dan jumlah wajib diisi');
+ Object.assign(d,{name:$('editDebtName').value.trim(),amount,paid:Math.min(paid,amount),due:$('editDebtDue').value,note:$('editDebtNote').value.trim()});
+ save();renderDebts();$('debtEditModal').style.display='none';toast('Piutang diperbarui');
+};
+
 window.payDebt=(id,v)=>{const d=data.debts.find(x=>String(x.id)===String(id));if(d)d.paid=Math.min(d.amount,Math.max(0,Number(v)||0));save();render()};
 window.deleteDebt=id=>{if(confirm('Hapus piutang ini?')){data.debts=data.debts.filter(d=>String(d.id)!==String(id));save();render()}};
 $('saveBudget').onclick=()=>{const k=$('budgetCategory').value,v=Number($('budgetAmount').value)||0;if(!v)return toast('Target anggaran belum diisi');data.budgets[k]=v;save();render();toast('Anggaran disimpan / direvisi')};
