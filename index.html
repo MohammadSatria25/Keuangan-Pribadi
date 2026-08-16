@@ -3,156 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Keuangan Pribadi</title>
+<title>KeuanganKu — Keuangan Pribadi</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#667085;--line:#e5e7eb;--primary:#2563eb;--green:#16a34a;--red:#dc2626;--orange:#ea580c}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;position:sticky;top:0;z-index:5}
-.brand{font-size:22px;font-weight:800}.sub{color:var(--muted);font-size:13px;margin-top:4px}
-.container{max-width:1250px;margin:auto;padding:24px}
-.toolbar{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin-bottom:20px}
-button,.filebtn{border:1px solid var(--line);background:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
-button.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
-button.danger{color:var(--red)}button:hover,.filebtn:hover{filter:brightness(.97)}
-input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--text)}
-label{font-size:13px;color:var(--muted);display:block}.field{display:flex;flex-direction:column;gap:6px}
-.grid{display:grid;gap:16px}.cards{grid-template-columns:repeat(4,1fr)}.two{grid-template-columns:repeat(2,1fr)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 2px 8px #00000008}
-.metric .label{font-size:13px;color:var(--muted)}.metric .value{font-size:23px;font-weight:800;margin-top:8px}.green{color:var(--green)}.red{color:var(--red)}
-.section{margin-top:20px}.section h2{font-size:17px;margin:0 0 12px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-.formgrid{grid-template-columns:repeat(4,1fr)}.formgrid .wide{grid-column:span 2}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-weight:700}td.num,th.num{text-align:right}
-.account{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}.account:last-child{border:0}
-.barrow{margin:12px 0}.barhead{display:flex;justify-content:space-between;font-size:13px}.bar{height:10px;background:#eef2f7;border-radius:20px;overflow:hidden;margin-top:6px}.fill{height:100%;background:var(--primary);border-radius:20px}
-.kpi{display:flex;gap:10px;flex-wrap:wrap}.badge{padding:8px 11px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:700}
-#toast{position:fixed;right:20px;bottom:20px;background:#111827;color:#fff;padding:12px 15px;border-radius:10px;display:none;z-index:20}
-.empty{text-align:center;color:var(--muted);padding:24px}.small{font-size:12px;color:var(--muted)}
-.preview{display:none;background:#f8fafc;border:1px dashed var(--line);padding:14px;border-radius:10px;margin-top:12px}
-@media(max-width:900px){.cards,.two,.formgrid{grid-template-columns:1fr 1fr}.formgrid .wide{grid-column:span 1}}
-@media(max-width:600px){.cards,.two,.formgrid{grid-template-columns:1fr}.container{padding:14px}header{padding:14px}.formgrid .wide{grid-column:span 1}}
+:root{--bg:#f3f6fb;--surface:#fff;--text:#14213d;--muted:#6b7280;--line:#e5eaf2;--nav:#102a56;--primary:#2563eb;--cyan:#06b6d4;--green:#16a34a;--red:#ef4444;--orange:#f59e0b;--purple:#8b5cf6;--shadow:0 12px 30px rgba(16,42,86,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:linear-gradient(180deg,var(--nav),#0b1d3b);color:#fff;padding:22px 15px;position:fixed;left:0;top:0;bottom:0;z-index:10}.logo{display:flex;align-items:center;gap:11px;padding:3px 10px 24px}.logo-mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#38bdf8,#2563eb);display:grid;place-items:center;font-size:23px;box-shadow:0 8px 18px #0003}.logo strong{font-size:19px}.logo small{display:block;color:#b9cae8;margin-top:2px}.nav-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#91a8ca;margin:10px 12px}.nav a{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:11px;color:#dce7f8;text-decoration:none;margin:3px 0;font-size:14px}.nav a:hover,.nav a.active{background:#ffffff18;color:#fff}.nav-icon{width:21px;text-align:center;font-size:17px}.sidebar-bottom{position:absolute;left:15px;right:15px;bottom:18px}.mini-card{background:#ffffff12;border:1px solid #ffffff18;border-radius:14px;padding:13px;font-size:12px;color:#dce7f8}.mini-card b{font-size:16px;display:block;margin-top:4px}
+.main{margin-left:250px;width:calc(100% - 250px);padding:25px 30px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.eyebrow{color:var(--primary);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px}.title{font-size:27px;font-weight:800;margin-top:5px}.subtitle{color:var(--muted);font-size:13px;margin-top:4px}.top-actions{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.field label{font-size:11px;color:var(--muted);font-weight:700;display:block;margin-bottom:5px}.field input,.field select{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;outline:none}.btn,.filebtn{border:1px solid var(--line);background:#fff;color:var(--text);padding:9px 13px;border-radius:10px;font-weight:700;cursor:pointer}.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}.btn:hover,.filebtn:hover{transform:translateY(-1px)}
+.grid{display:grid;gap:16px}.kpis{grid-template-columns:repeat(4,1fr)}.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}.kpi{position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-35px;background:currentColor;opacity:.07}.kpi-top{display:flex;justify-content:space-between;align-items:center}.kpi-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:#eef4ff}.kpi-label{font-size:12px;color:var(--muted);font-weight:700}.kpi-value{font-size:22px;font-weight:850;margin-top:9px}.kpi-note{font-size:11px;color:var(--muted);margin-top:6px}.c-blue{color:#2563eb}.c-green{color:#16a34a}.c-red{color:#ef4444}.c-orange{color:#d97706}.section{margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}.section-title h2{font-size:16px;margin:0}.muted{color:var(--muted);font-size:12px}.two{grid-template-columns:1.15fr .85fr}.account-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.account{border:1px solid var(--line);border-radius:14px;padding:14px;background:linear-gradient(145deg,#fff,#f7faff);position:relative;overflow:hidden}.account:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(#2563eb,#06b6d4)}.account-name{font-weight:750;font-size:13px}.account-bal{font-size:18px;font-weight:850;margin-top:8px}.formgrid{grid-template-columns:repeat(4,1fr)}.wide{grid-column:span 2}.actions{display:flex;gap:8px;flex-wrap:wrap}.chart-wrap{min-height:245px}.barrow{margin:13px 0}.barhead{display:flex;justify-content:space-between;font-size:12px}.bar{height:10px;background:#edf2f8;border-radius:20px;overflow:hidden;margin-top:6px}.fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#2563eb,#06b6d4)}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:11px;text-transform:uppercase}.num{text-align:right}.badge{padding:7px 10px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:800}.badges{display:flex;gap:7px;flex-wrap:wrap}.receipt{background:linear-gradient(135deg,#eff6ff,#f5f3ff);border:1px dashed #9bb8ed}.receipt input[type=file]{display:none}.filebtn{display:inline-flex;align-items:center;gap:7px}.notice{padding:11px 13px;border-radius:11px;background:#fff7ed;color:#9a3412;font-size:11px}.empty{text-align:center;color:var(--muted);padding:22px}.hidden{display:none}#toast{position:fixed;right:22px;bottom:22px;background:#111827;color:#fff;padding:12px 15px;border-radius:11px;display:none;z-index:50}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(2,1fr)}.account-grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:750px){.sidebar{width:72px;padding:15px 9px}.logo{justify-content:center;padding:3px 0 20px}.logo strong,.logo small,.nav-title,.nav a span{display:none}.nav a{justify-content:center;padding:12px}.sidebar-bottom{display:none}.main{margin-left:72px;width:calc(100% - 72px);padding:18px 13px}.formgrid{grid-template-columns:1fr 1fr}.wide{grid-column:span 2}}@media(max-width:520px){.kpis,.account-grid,.formgrid{grid-template-columns:1fr}.wide{grid-column:span 1}.main{padding:14px}.title{font-size:22px}.topbar{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
-<header>
-  <div class="container" style="padding:0">
-    <div class="brand">Keuangan Pribadi</div>
-    <div class="sub">Dashboard pemasukan, pengeluaran, rekening, piutang, tabungan, dan laporan</div>
-  </div>
-</header>
-
-<main class="container">
-  <div class="toolbar">
-    <div>
-      <label>Bulan laporan</label>
-      <input id="period" type="month" style="width:180px;margin-top:6px">
-    </div>
-    <div class="actions">
-      <button id="exportExcel">Export Excel</button>
-      <button id="exportPdf">Export PDF</button>
-      <button id="backup">Backup Data</button>
-      <label class="filebtn">Restore Data<input id="restore" type="file" accept=".json" hidden></label>
-    </div>
-  </div>
-
-  <div class="grid cards">
-    <div class="card metric"><div class="label">Saldo seluruh rekening</div><div id="saldo" class="value">Rp0</div></div>
-    <div class="card metric"><div class="label">Pemasukan bulan ini</div><div id="income" class="value green">Rp0</div></div>
-    <div class="card metric"><div class="label">Pengeluaran bulan ini</div><div id="expense" class="value red">Rp0</div></div>
-    <div class="card metric"><div class="label">Piutang belum lunas</div><div id="receivable" class="value">Rp0</div></div>
-  </div>
-
-  <div class="grid two section">
-    <section class="card">
-      <h2>Rekening</h2>
-      <div id="accounts"></div>
-      <div class="grid formgrid" style="margin-top:12px">
-        <div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / Cash / E-Wallet"></div>
-        <div class="field"><label>Saldo awal</label><input id="accBalance" type="number" min="0" value="0"></div>
-        <div style="display:flex;align-items:end"><button class="primary" id="addAccount" style="width:100%">+ Tambah</button></div>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Analisis otomatis</h2>
-      <div id="analysis" class="small">Belum ada transaksi.</div>
-      <div class="kpi" id="badges" style="margin-top:14px"></div>
-    </section>
-  </div>
-
-  <section class="card section">
-    <h2>Tambah transaksi</h2>
-    <div class="grid formgrid">
-      <div class="field"><label>Tanggal</label><input id="txDate" type="date"></div>
-      <div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div>
-      <div class="field"><label>Kategori</label><select id="txCategory"></select></div>
-      <div class="field"><label>Rekening</label><select id="txAccount"></select></div>
-      <div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div>
-      <div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div>
-      <div style="display:flex;align-items:end"><button class="primary" id="addTx" style="width:100%">Simpan transaksi</button></div>
-    </div>
-    <div class="small" style="margin-top:10px">Transfer antar rekening hanya memindahkan saldo dan tidak dihitung sebagai pemasukan/pengeluaran.</div>
-  </section>
-
-  <div class="grid two section">
-    <section class="card">
-      <h2>Diagram pengeluaran berdasarkan kategori</h2>
-      <div id="expenseChart"></div>
-    </section>
-    <section class="card">
-      <h2>Pemasukan vs pengeluaran</h2>
-      <div id="compareChart"></div>
-    </section>
-  </div>
-
-  <section class="card section">
-    <h2>Anggaran bulanan</h2>
-    <div class="grid formgrid">
-      <div class="field"><label>Kategori</label><select id="budgetCategory"></select></div>
-      <div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div>
-      <div style="display:flex;align-items:end"><button id="saveBudget" style="width:100%">Simpan anggaran</button></div>
-    </div>
-    <div id="budgetList" style="margin-top:15px"></div>
-  </section>
-
-  <section class="card section">
-    <h2>Piutang / uang yang dipinjam orang</h2>
-    <div class="grid formgrid">
-      <div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div>
-      <div class="field"><label>Jumlah</label><input id="debtAmount" type="number" min="0"></div>
-      <div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div>
-      <div style="display:flex;align-items:end"><button id="addDebt" style="width:100%">+ Tambah piutang</button></div>
-    </div>
-    <div style="overflow:auto;margin-top:15px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div>
-  </section>
-
-  <section class="card section">
-    <h2>Upload foto struk — fitur pintar</h2>
-    <p class="small">Sistem mencoba membaca toko, tanggal, total, dan teks struk menggunakan OCR. Selalu periksa hasil sebelum menyimpan karena kualitas foto dan format struk dapat memengaruhi hasil.</p>
-    <div class="actions" style="margin-top:10px">
-      <label class="filebtn">Pilih foto struk<input id="receiptFile" type="file" accept="image/*" hidden></label>
-      <button id="scanReceipt">Analisis struk</button>
-    </div>
-    <div id="ocrStatus" class="small" style="margin-top:10px"></div>
-    <div id="receiptPreview" class="preview">
-      <div class="grid formgrid">
-        <div class="field"><label>Toko</label><input id="rStore"></div>
-        <div class="field"><label>Tanggal</label><input id="rDate" type="date"></div>
-        <div class="field"><label>Total</label><input id="rTotal" type="number"></div>
-        <div class="field"><label>Kategori</label><select id="rCategory"></select></div>
-      </div>
-      <div class="small" style="margin-top:10px">Teks OCR:</div>
-      <pre id="ocrText" style="white-space:pre-wrap;max-height:180px;overflow:auto;background:#fff;padding:10px;border-radius:8px"></pre>
-      <button class="primary" id="saveReceipt" style="margin-top:10px">Simpan sebagai pengeluaran</button>
-    </div>
-  </section>
-
-  <section class="card section">
-    <h2>Transaksi bulan terpilih</h2>
-    <div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Rekening</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div>
-  </section>
-</main>
-<div id="toast"></div>
-
+<div class="app">
+<aside class="sidebar">
+<div class="logo"><div class="logo-mark">💰</div><div><strong>KeuanganKu</strong><small>Personal Finance</small></div></div>
+<div class="nav-title">Menu utama</div><nav class="nav">
+<a class="active" href="#dashboard"><span class="nav-icon">🏠</span><span>Dashboard</span></a>
+<a href="#transaksi"><span class="nav-icon">💸</span><span>Transaksi</span></a>
+<a href="#rekening"><span class="nav-icon">💳</span><span>Rekening</span></a>
+<a href="#anggaran"><span class="nav-icon">🎯</span><span>Anggaran</span></a>
+<a href="#piutang"><span class="nav-icon">👥</span><span>Piutang</span></a>
+<a href="#struk"><span class="nav-icon">🧾</span><span>Scan Struk</span></a>
+<a href="#laporan"><span class="nav-icon">📊</span><span>Laporan</span></a>
+</nav>
+<div class="nav-title">Sistem</div><nav class="nav"><a href="#backup"><span class="nav-icon">💾</span><span>Backup Data</span></a></nav>
+<div class="sidebar-bottom"><div class="mini-card">💡 <b>Catatan</b>Gunakan satu transaksi untuk setiap pemasukan atau pengeluaran agar analisis akurat.</div></div>
+</aside>
+<main class="main" id="dashboard">
+<div class="topbar"><div><div class="eyebrow">Ringkasan keuangan</div><div class="title">Selamat datang 👋</div><div class="subtitle">Pantau kondisi keuangan pribadi Anda dengan lebih rapi.</div></div>
+<div class="top-actions"><div class="field"><label>Periode</label><input id="period" type="month"></div><button class="btn" id="exportExcel">📥 Excel</button><button class="btn" id="exportPdf">📄 PDF</button></div></div>
+<div class="grid kpis">
+<div class="card kpi c-blue"><div class="kpi-top"><span class="kpi-label">TOTAL SALDO</span><span class="kpi-icon">💰</span></div><div id="saldo" class="kpi-value">Rp0</div><div class="kpi-note">Gabungan semua rekening</div></div>
+<div class="card kpi c-green"><div class="kpi-top"><span class="kpi-label">PEMASUKAN</span><span class="kpi-icon">↗️</span></div><div id="income" class="kpi-value">Rp0</div><div class="kpi-note">Periode terpilih</div></div>
+<div class="card kpi c-red"><div class="kpi-top"><span class="kpi-label">PENGELUARAN</span><span class="kpi-icon">↘️</span></div><div id="expense" class="kpi-value">Rp0</div><div class="kpi-note">Periode terpilih</div></div>
+<div class="card kpi c-orange"><div class="kpi-top"><span class="kpi-label">PIUTANG</span><span class="kpi-icon">👥</span></div><div id="receivable" class="kpi-value">Rp0</div><div class="kpi-note">Belum lunas</div></div>
+</div>
+<div class="grid two section"><section class="card" id="rekening"><div class="section-title"><h2>💳 Rekening Anda</h2><span class="muted">Saldo saat ini</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / Cash"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div></section>
+<section class="card"><div class="section-title"><h2>🧠 Analisis pintar</h2><span class="badge">AUTO</span></div><div id="analysis" class="muted">Masukkan transaksi untuk mendapatkan analisis.</div><div id="badges" class="badges" style="margin-top:14px"></div></section></div>
+<div class="grid two section"><section class="card"><div class="section-title"><h2>📊 Komposisi pengeluaran</h2><span class="muted">Berdasarkan kategori</span></div><div id="expenseChart" class="chart-wrap"></div></section><section class="card"><div class="section-title"><h2>📈 Arus kas</h2><span class="muted">Pemasukan vs pengeluaran</span></div><div id="compareChart" class="chart-wrap"></div></section></div>
+<section class="card section" id="transaksi"><div class="section-title"><h2>💸 Tambah transaksi</h2><span class="muted">Transfer rekening tidak dihitung sebagai pengeluaran</span></div><div class="grid formgrid"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening</label><select id="txAccount"></select></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div><div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></section>
+<section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section>
+<section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section>
+<section class="card section receipt" id="struk"><div class="section-title"><h2>🧾 Scan struk pintar</h2><span class="badge">OCR</span></div><p class="muted">Upload foto struk untuk mencoba membaca toko, tanggal, total, dan teks pembelian secara otomatis. Periksa hasil sebelum menyimpan.</p><div class="actions"><label class="filebtn">📷 Pilih foto struk<input id="receiptFile" type="file" accept="image/*"></label><button class="btn primary" id="scanReceipt">✨ Analisis struk</button></div><div id="ocrStatus" class="muted" style="margin-top:10px"></div><div id="receiptPreview" class="hidden" style="margin-top:14px"><div class="grid formgrid"><div class="field"><label>Toko</label><input id="rStore"></div><div class="field"><label>Tanggal</label><input id="rDate" type="date"></div><div class="field"><label>Total</label><input id="rTotal" type="number"></div><div class="field"><label>Kategori</label><select id="rCategory"></select></div></div><div class="muted" style="margin-top:10px">Teks hasil OCR</div><pre id="ocrText" style="white-space:pre-wrap;max-height:170px;overflow:auto;background:#fff;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:11px"></pre><button class="btn primary" id="saveReceipt">Simpan sebagai pengeluaran</button></div></section>
+<section class="card section" id="laporan"><div class="section-title"><h2>📋 Transaksi bulan terpilih</h2><span class="muted">Data detail laporan</span></div><div style="overflow:auto"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Rekening</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div></section>
+<section class="section" id="backup"><div class="notice">🔐 <b>Privasi:</b> versi ini menyimpan data di browser perangkat. Jangan gunakan sebagai penyimpanan utama sampai database online Supabase kita pasang.</div><div class="actions" style="margin-top:10px"><button class="btn" id="backup">💾 Backup Data</button><label class="filebtn">↩️ Restore Data<input id="restore" type="file" accept=".json"></label></div></section>
+</main></div><div id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -283,5 +178,7 @@ $('exportPdf').onclick=()=>{
 function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 render();
 </script>
+</body>
+</html>
 </body>
 </html>
