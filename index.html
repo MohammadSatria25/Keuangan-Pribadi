@@ -55,7 +55,7 @@
 
 <section id="view-rekening" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Rekening</div><div class="subtitle">Kelola rekening satu per satu.</div></div></div><section class="card" id="rekening"><div class="section-title"><h2>💳 Daftar Rekening</h2><span class="muted">Pilih rekening untuk melihat detail</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / BRI / E-Wallet"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div>
 <div class="card section" style="box-shadow:none">
- <div class="section-title"><h2>⚙️ Kelola Rekening</h2><span class="muted">Edit atau hapus rekening yang tidak diperlukan</span></div>
+ <div class="section-title"><h2>⚙️ Kelola Rekening</h2><span class="muted">Gunakan tombol Edit / Hapus di sini</span></div>
  <div class="table-wrap"><table><thead><tr><th>Rekening</th><th class="num">Saldo Saat Ini</th><th>Aksi</th></tr></thead><tbody id="accountManageTable"></tbody></table></div>
 </div>
 </section></section>
@@ -117,7 +117,7 @@ function accountBalance(a){
 }
 
 function renderAccountManage(){
- const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="editAccount(${a.id})">✏️ Edit</button><button class="btn delete" onclick="deleteAccount(${a.id})">🗑️ Hapus</button></div></td></tr>`).join('');
+ const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="editAccount(${a.id});return false;">✏️ Edit</button><button class="btn delete" onclick="deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></td></tr>`).join('');
  const el=$('accountManageTable'); if(el)el.innerHTML=rows||'<tr><td colspan="3" class="empty">Belum ada rekening.</td></tr>';
 }
 function renderAccounts(){
@@ -131,8 +131,8 @@ function renderAccounts(){
      <small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small>
    </div>
    <div class="actions" style="margin-top:10px">
-     <button type="button" class="btn edit account-edit-btn" data-account-edit="${a.id}">✏️ Edit</button>
-     <button type="button" class="btn delete account-delete-btn" data-account-delete="${a.id}">🗑️ Hapus</button>
+     <button type="button" class="btn edit" onclick="editAccount(${a.id});return false;">✏️ Edit</button>
+     <button type="button" class="btn delete" onclick="deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button>
    </div>
  </div>`).join('');
  $('accounts').innerHTML=cards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
@@ -533,5 +533,55 @@ document.addEventListener('click', function(e){
     if(typeof save==='function')save();
   }catch(e){console.error('Data migration',e)}
 })();
+</script>
+
+<script>
+window.deleteAccountDirect=function(id){
+  try{
+    if(!window.data || !Array.isArray(data.accounts)){
+      alert('Data rekening tidak ditemukan. Silakan refresh halaman.');
+      return false;
+    }
+    const account=data.accounts.find(a=>Number(a.id)===Number(id));
+    if(!account){
+      alert('Rekening tidak ditemukan.');
+      return false;
+    }
+
+    const used=(data.transactions||[]).some(t =>
+      Number(t.accountId)===Number(id) ||
+      Number(t.from)===Number(id) ||
+      Number(t.to)===Number(id)
+    );
+
+    if(used){
+      alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi.\\n\\nUntuk menjaga riwayat keuangan tetap aman, hapus atau pindahkan/revisi transaksi rekening ini terlebih dahulu.');
+      return false;
+    }
+
+    if(data.accounts.length<=1){
+      alert('Tidak dapat menghapus rekening terakhir. Minimal harus ada satu rekening.');
+      return false;
+    }
+
+    const ok=window.confirm('Yakin ingin menghapus rekening "'+(account.name||'')+'"?');
+    if(!ok)return false;
+
+    data.accounts=data.accounts.filter(a=>Number(a.id)!==Number(id));
+
+    const next=data.accounts[0];
+    window.activeAccountId=next ? Number(next.id) : null;
+
+    if(typeof save==='function') save();
+    if(typeof render==='function') render();
+
+    alert('Rekening "'+(account.name||'')+'" berhasil dihapus.');
+    return false;
+  }catch(err){
+    console.error(err);
+    alert('Gagal menghapus rekening: '+err.message);
+    return false;
+  }
+};
 </script>
 </body></html>
