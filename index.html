@@ -30,7 +30,7 @@
 <div class="sidebar-bottom"><div class="mini-card">💡 <b>Catatan</b>Gunakan satu transaksi untuk setiap pemasukan atau pengeluaran agar analisis akurat.</div></div>
 </aside>
 <main class="main" id="dashboard">
-<div class="topbar"><div><div class="eyebrow">Ringkasan keuangan</div><div class="title">Selamat datang 👋</div><div class="subtitle">Pantau kondisi keuangan pribadi Anda dengan lebih rapi.</div></div>
+<div class="topbar"><div><div class="eyebrow">Ringkasan keuangan</div><div class="title">Selamat datang 👋</div><div class="subtitle">Pantau kondisi keuangan pribadi Anda dengan lebih rapi. Semua angka di dashboard mengikuti rekening aktif.</div></div>
 <div class="top-actions"><div class="field"><label>Periode</label><input id="period" type="month"></div><div class="field"><label>Rekening aktif</label><select id="viewAccount"></select></div><button class="btn" id="exportExcel">📥 Excel</button><button class="btn" id="exportPdf">📄 PDF</button></div></div>
 <div class="grid kpis">
 <div class="card kpi c-blue"><div class="kpi-top"><span class="kpi-label">SALDO REKENING</span><span class="kpi-icon">💰</span></div><div id="saldo" class="kpi-value">Rp0</div><div class="kpi-note">Rekening aktif</div></div>
@@ -45,7 +45,7 @@
 <div class="grid two section"><section class="card" id="rekening"><div class="section-title"><h2>💳 Daftar Rekening</h2><span class="muted">Pilih rekening untuk melihat detail</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / BRI / E-Wallet"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div></section>
 <section class="card"><div class="section-title"><h2>🧠 Analisis pintar</h2><span class="badge">AUTO</span></div><div id="analysis" class="muted">Masukkan transaksi untuk mendapatkan analisis.</div><div id="badges" class="badges" style="margin-top:14px"></div></section></div>
 <div class="grid two section"><section class="card"><div class="section-title"><h2>📊 Komposisi pengeluaran</h2><span class="muted">Berdasarkan kategori</span></div><div id="expenseChart" class="chart-wrap"></div></section><section class="card"><div class="section-title"><h2>📈 Arus kas</h2><span class="muted">Pemasukan vs pengeluaran</span></div><div id="compareChart" class="chart-wrap"></div></section></div>
-<section class="card section" id="transaksi"><div class="section-title"><h2>💸 Tambah transaksi</h2><span class="muted">Transfer rekening tidak dihitung sebagai pengeluaran</span></div><div class="grid formgrid"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening</label><select id="txAccount"></select></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div><div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></section>
+<section class="card section" id="transaksi"><div class="section-title"><h2>💸 Tambah transaksi</h2><span class="muted">Pilih rekening dulu — pemasukan & pengeluaran dicatat terpisah per rekening</span></div><div class="grid formgrid"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening transaksi</label><select id="txAccount"></select></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="0"></div><div class="field wide"><label>Keterangan</label><input id="txNote" placeholder="Contoh: belanja bulanan"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></section>
 <section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section>
 <section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section>
 <section class="card section receipt" id="struk"><div class="section-title"><h2>🧾 Scan struk pintar</h2><span class="badge">OCR</span></div><p class="muted">Upload foto struk untuk mencoba membaca toko, tanggal, total, dan teks pembelian secara otomatis. Periksa hasil sebelum menyimpan.</p><div class="actions"><label class="filebtn">📷 Pilih foto struk<input id="receiptFile" type="file" accept="image/*"></label><button class="btn primary" id="scanReceipt">✨ Analisis struk</button></div><div id="ocrStatus" class="muted" style="margin-top:10px"></div><div id="receiptPreview" class="hidden" style="margin-top:14px"><div class="grid formgrid"><div class="field"><label>Toko</label><input id="rStore"></div><div class="field"><label>Tanggal</label><input id="rDate" type="date"></div><div class="field"><label>Total</label><input id="rTotal" type="number"></div><div class="field"><label>Kategori</label><select id="rCategory"></select></div></div><div class="muted" style="margin-top:10px">Teks hasil OCR</div><pre id="ocrText" style="white-space:pre-wrap;max-height:170px;overflow:auto;background:#fff;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:11px"></pre><button class="btn primary" id="saveReceipt">Simpan sebagai pengeluaran</button></div></section>
@@ -103,35 +103,66 @@ function monthTx(){return data.transactions.filter(t=>t.date.slice(0,7)===$('per
 function accountBalance(a){
  let b=Number(a.opening)||0;
  data.transactions.forEach(t=>{
-  if(t.type==='income'&&t.accountId===a.id)b+=t.amount;
-  if(t.type==='expense'&&t.accountId===a.id)b-=t.amount;
-  if(t.type==='transfer'&&t.from===a.id)b-=t.amount;
-  if(t.type==='transfer'&&t.to===a.id)b+=t.amount;
+  if(t.type==='income'&&Number(t.accountId)===Number(a.id))b+=t.amount;
+  if(t.type==='expense'&&Number(t.accountId)===Number(a.id))b-=t.amount;
+  if(t.type==='transfer'&&Number(t.from)===Number(a.id))b-=t.amount;
+  if(t.type==='transfer'&&Number(t.to)===Number(a.id))b+=t.amount;
  });
  return b;
 }
 function renderAccounts(){
+ const currentView=String($('viewAccount')?.value||'');
+ const currentTx=String($('txAccount')?.value||'');
+ const currentEdit=String($('editAccount')?.value||'');
+ const currentTo=String($('editTo')?.value||'');
  const accs=activeAccounts();
- $('accounts').innerHTML=accs.map(a=>`<div class="account" style="cursor:pointer" onclick="selectAccount(${a.id})"><span class="account-name">${esc(a.name)}</span><strong class="account-bal">${rp(accountBalance(a))}</strong><small>Klik untuk melihat rekap rekening</small></div>`).join('')||'<div class="empty">Belum ada rekening. Tambahkan rekening bank/e-wallet Anda.</div>';
- $('txAccount').innerHTML=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- $('editAccount').innerHTML=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- $('editTo').innerHTML=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- $('viewAccount').innerHTML=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- if(!accs.length){ $('viewAccount').innerHTML='<option value="">Belum ada rekening</option>'; return; }
- if(!accs.some(a=>String(a.id)===String($('viewAccount').value))) $('viewAccount').value=accs[0].id;
+
+ $('accounts').innerHTML=accs.map(a=>`<div class="account" style="cursor:pointer" onclick="selectAccount(${a.id})"><span class="account-name">${esc(a.name)}</span><strong class="account-bal">${rp(accountBalance(a))}</strong><small>Klik untuk membuka rekening</small></div>`).join('')||'<div class="empty">Belum ada rekening. Tambahkan rekening bank/e-wallet Anda.</div>';
+
+ const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
+ $('viewAccount').innerHTML=opts;
+ $('txAccount').innerHTML=opts;
+ $('editAccount').innerHTML=opts;
+ $('editTo').innerHTML=opts;
+
+ if(!accs.length){
+   $('viewAccount').innerHTML='<option value="">Belum ada rekening</option>';
+   $('txAccount').innerHTML='<option value="">Tambahkan rekening terlebih dahulu</option>';
+   return;
+ }
+
+ const viewOk=accs.some(a=>String(a.id)===currentView);
+ const txOk=accs.some(a=>String(a.id)===currentTx);
+ const editOk=accs.some(a=>String(a.id)===currentEdit);
+ const toOk=accs.some(a=>String(a.id)===currentTo);
+
+ $('viewAccount').value=viewOk?currentView:String(accs[0].id);
+ $('txAccount').value=txOk?currentTx:$('viewAccount').value;
+ $('editAccount').value=editOk?currentEdit:$('viewAccount').value;
+ $('editTo').value=toOk?currentTo:(accs.find(a=>String(a.id)!==String($('editAccount').value))?.id||accs[0].id);
 }
+
 function selectedAccountId(){ return Number($('viewAccount').value)||null; }
 function accountMonthTx(id){
- return monthTx().filter(t=>t.accountId===id || (t.type==='transfer' && t.to===id));
+ return monthTx().filter(t=>Number(t.accountId)===Number(id) || (t.type==='transfer' && Number(t.to)===Number(id)));
 }
-function selectAccount(id){ $('viewAccount').value=id; render(); document.getElementById('dashboard').scrollIntoView({behavior:'smooth'}); }
+function selectAccount(id){
+ const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
+ if(!acc)return toast('Rekening tidak ditemukan');
+ $('viewAccount').value=String(acc.id);
+ $('txAccount').value=String(acc.id);
+ render();
+}
 
 function render(){
+ const before=String($('viewAccount').value||'');
  renderAccounts();
  const id=selectedAccountId();
+ if(id){ $('txAccount').value=String(id); }
+
  const mt=id?accountMonthTx(id):[];
- const inc=mt.filter(t=>t.type==='income' && t.accountId===id).reduce((s,t)=>s+t.amount,0);
- const exp=mt.filter(t=>t.type==='expense' && t.accountId===id).reduce((s,t)=>s+t.amount,0);
+ const inc=mt.filter(t=>t.type==='income' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+t.amount,0);
+ const exp=mt.filter(t=>t.type==='expense' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+t.amount,0);
  const acc=activeAccounts().find(a=>a.id===id);
  $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
  $('income').textContent=rp(inc); $('expense').textContent=rp(exp); $('receivable').textContent=rp(inc-exp);
@@ -141,7 +172,7 @@ function render(){
 function renderAccountRecap(){
  const month=$('period').value;
  $('accountRecap').innerHTML=activeAccounts().map(a=>{
-   const mt=data.transactions.filter(t=>t.date.slice(0,7)===month && t.accountId===a.id);
+   const mt=data.transactions.filter(t=>t.date.slice(0,7)===month && Number(t.accountId)===Number(a.id));
    const inc=mt.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
    const exp=mt.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
    return `<tr><td><b>${esc(a.name)}</b></td><td class="num"><b>${rp(accountBalance(a))}</b></td><td class="num" style="color:#16a34a">${rp(inc)}</td><td class="num" style="color:#ef4444">${rp(exp)}</td><td class="num">${rp(inc-exp)}</td><td><button class="btn" onclick="selectAccount(${a.id})">Lihat detail</button></td></tr>`;
@@ -152,8 +183,15 @@ function renderTransactions(mt){
  $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
 }
 function renderDebts(){
- $('debtTable').innerHTML=data.debts.length?data.debts.map(d=>`<tr><td>${esc(d.name)}</td><td>${rp(d.amount)}</td><td><input type="number" min="0" value="${d.paid}" style="width:120px" onchange="payDebt('${d.id}',this.value)"></td><td>${rp(Math.max(0,d.amount-d.paid))}</td><td>${d.due||'-'}</td><td><button class="danger" onclick="deleteDebt('${d.id}')">Hapus</button></td></tr>`).join(''):'<tr><td colspan="6" class="empty">Belum ada piutang.</td></tr>';
+ $('debtTable').innerHTML=data.debts.length?data.debts.map(d=>`<tr><td>${esc(d.name)}</td><td>${rp(d.amount)}</td><td><input type="number" min="0" value="${d.paid}" style="width:120px" onchange="payDebt('${d.id}',this.value)"></td><td>${rp(Math.max(0,d.amount-d.paid))}</td><td>${d.due||'-'}</td><td><div class="actions"><button class="btn" onclick="editDebt('${d.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteDebt('${d.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="6" class="empty">Belum ada piutang.</td></tr>';
 }
+window.editDebt=id=>{
+ const d=data.debts.find(x=>String(x.id)===String(id)); if(!d)return;
+ $('debtName').value=d.name;$('debtAmount').value=d.amount;$('debtDue').value=d.due||'';
+ document.getElementById('piutang').scrollIntoView({behavior:'smooth'});
+ data.debts=data.debts.filter(x=>String(x.id)!==String(id));
+ save();render();toast('Piutang siap direvisi, lalu tekan Tambah piutang');
+};
 function renderCharts(mt,inc,exp){
  const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);
  const rows=Object.entries(by).sort((a,b)=>b[1]-a[1]), max=rows[0]?.[1]||1;
@@ -162,10 +200,23 @@ function renderCharts(mt,inc,exp){
  $('compareChart').innerHTML=`<div class="barrow"><div class="barhead"><span>Pemasukan</span><b>${rp(inc)}</b></div><div class="bar"><div class="fill" style="width:${inc/max2*100}%"></div></div></div><div class="barrow"><div class="barhead"><span>Pengeluaran</span><b>${rp(exp)}</b></div><div class="bar"><div class="fill" style="width:${exp/max2*100}%"></div></div></div><div class="small" style="margin-top:18px">Sisa bulan ini: <b>${rp(inc-exp)}</b></div>`;
 }
 function renderBudgets(mt){
- const actual={};mt.filter(t=>t.type==='expense').forEach(t=>actual[t.category]=(actual[t.category]||0)+t.amount);
- const keys=Object.keys(data.budgets);
- $('budgetList').innerHTML=keys.length?keys.map(k=>{const target=data.budgets[k],a=actual[k]||0,p=Math.min(100,target?a/target*100:0);return `<div class="barrow"><div class="barhead"><span>${esc(k)}</span><span>${rp(a)} / ${rp(target)}</span></div><div class="bar"><div class="fill" style="width:${p}%"></div></div></div>`}).join(''):'<div class="small">Belum ada anggaran.</div>';
+ const keys=Object.keys(data.budgets||{});
+ $('budgetList').innerHTML=keys.length?keys.map(k=>{
+   const target=Number(data.budgets[k])||0;
+   const real=mt.filter(t=>t.type==='expense'&&t.category===k).reduce((s,t)=>s+t.amount,0);
+   const p=target?Math.min(100,real/target*100):0;
+   return `<div style="margin:12px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(k)}</b><span>${rp(real)} / ${rp(target)}</span></div><div class="progress"><div style="width:${p}%"></div></div><div class="actions" style="margin-top:6px"><button class="btn" onclick="editBudget('${encodeURIComponent(k)}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteBudget('${encodeURIComponent(k)}')">🗑️ Hapus</button></div></div>`;
+ }).join(''):'<div class="empty">Belum ada anggaran.</div>';
 }
+window.editBudget=k=>{
+ const key=decodeURIComponent(k);
+ $('budgetCategory').value=key;$('budgetAmount').value=Number(data.budgets[key])||0;
+ document.getElementById('anggaran').scrollIntoView({behavior:'smooth'});
+};
+window.deleteBudget=k=>{
+ const key=decodeURIComponent(k);
+ if(confirm('Hapus anggaran '+key+'?')){delete data.budgets[key];save();render();toast('Anggaran dihapus');}
+};
 function renderAnalysis(mt,inc,exp){
  const by={};mt.filter(t=>t.type==='expense').forEach(t=>by[t.category]=(by[t.category]||0)+t.amount);
  const top=Object.entries(by).sort((a,b)=>b[1]-a[1])[0];
@@ -234,9 +285,17 @@ $('saveEdit').onclick=()=>{
 $('addDebt').onclick=()=>{const name=$('debtName').value.trim(),amount=Number($('debtAmount').value);if(!name||!amount)return toast('Nama dan jumlah wajib diisi');data.debts.push({id:Date.now(),name,amount,paid:0,due:$('debtDue').value});$('debtName').value='';$('debtAmount').value='';$('debtDue').value='';save();render();toast('Piutang ditambahkan')};
 window.payDebt=(id,v)=>{const d=data.debts.find(x=>String(x.id)===String(id));if(d)d.paid=Math.min(d.amount,Math.max(0,Number(v)||0));save();render()};
 window.deleteDebt=id=>{if(confirm('Hapus piutang ini?')){data.debts=data.debts.filter(d=>String(d.id)!==String(id));save();render()}};
-$('saveBudget').onclick=()=>{const k=$('budgetCategory').value,v=Number($('budgetAmount').value)||0;data.budgets[k]=v;save();render();toast('Anggaran disimpan')};
+$('saveBudget').onclick=()=>{const k=$('budgetCategory').value,v=Number($('budgetAmount').value)||0;if(!v)return toast('Target anggaran belum diisi');data.budgets[k]=v;save();render();toast('Anggaran disimpan / direvisi')};
 $('period').onchange=render;
-$('viewAccount').onchange=render;
+$('viewAccount').onchange=()=>{
+ const id=selectedAccountId();
+ if(id){ $('txAccount').value=String(id); }
+ render();
+};
+$('txAccount').onchange=()=>{
+ const id=Number($('txAccount').value);
+ if(id){ $('viewAccount').value=String(id); render(); }
+};
 
 $('receiptFile').onchange=e=>{receiptFile=e.target.files[0]||null;$('ocrStatus').textContent=receiptFile?'Foto siap dianalisis. Klik "Analisis struk".':''};
 $('scanReceipt').onclick=async()=>{
@@ -255,14 +314,14 @@ $('scanReceipt').onclick=async()=>{
  }catch(e){$('ocrStatus').textContent='OCR gagal. Silakan masukkan data secara manual.'}
  $('scanReceipt').disabled=false;
 };
-$('saveReceipt').onclick=()=>{const amount=Number($('rTotal').value);if(!amount)return toast('Total struk belum terbaca');data.transactions.push({id:Date.now(),date:$('rDate').value||today.toISOString().slice(0,10),type:'expense',category:$('rCategory').value,accountId:Number($('txAccount').value),amount,note:'Struk - '+($('rStore').value||'Pembelian')});save();render();$('receiptPreview').style.display='none';$('receiptFile').value='';receiptFile=null;toast('Struk disimpan sebagai pengeluaran')};
+$('saveReceipt').onclick=()=>{const amount=Number($('rTotal').value);if(!amount)return toast('Total struk belum terbaca');data.transactions.push({id:Date.now(),date:$('rDate').value||today.toISOString().slice(0,10),type:'expense',category:$('rCategory').value,accountId:Number($('viewAccount').value),amount,note:'Struk - '+($('rStore').value||'Pembelian')});save();render();$('receiptPreview').style.display='none';$('receiptFile').value='';receiptFile=null;toast('Struk disimpan sebagai pengeluaran')};
 
 $('backup').onclick=()=>{download('backup_keuangan.json','application/json',JSON.stringify(data,null,2));toast('Backup dibuat')};
 $('restore').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();render();toast('Data berhasil dipulihkan')}catch{toast('File backup tidak valid')}};r.readAsText(f)};
 
 $('exportExcel').onclick=()=>{
  if(typeof XLSX==='undefined')return toast('Library Excel belum termuat. Periksa koneksi internet.');
- const month=$('period').value,mt=monthTx();
+ const month=$('period').value,id=selectedAccountId(),mt=id?accountMonthTx(id):[];
  const rows=mt.map(t=>({Tanggal:t.date,Jenis:t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer',Kategori:t.category,Rekening:data.accounts.find(a=>a.id===t.accountId)?.name||'',Keterangan:t.note||'',Nominal:t.amount}));
  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(rows),'Transaksi');
  XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(data.accounts.map(a=>({Rekening:a.name,SaldoAwal:a.opening,SaldoSaatIni:accountBalance(a)}))),'Rekening');
@@ -271,7 +330,7 @@ $('exportExcel').onclick=()=>{
 };
 $('exportPdf').onclick=()=>{
  if(!window.jspdf)return toast('Library PDF belum termuat. Periksa koneksi internet.');
- const {jsPDF}=window.jspdf,doc=new jsPDF(),month=$('period').value,mt=monthTx(),inc=mt.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),exp=mt.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
+ const {jsPDF}=window.jspdf,doc=new jsPDF(),month=$('period').value,id=selectedAccountId(),mt=id?accountMonthTx(id):[],inc=mt.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0),exp=mt.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);
  doc.setFontSize(18);doc.text('Laporan Keuangan Pribadi',14,18);doc.setFontSize(11);doc.text('Periode: '+month,14,27);
  doc.text('Pemasukan: '+rp(inc),14,40);doc.text('Pengeluaran: '+rp(exp),14,48);doc.text('Selisih: '+rp(inc-exp),14,56);
  let y=70;doc.text('Saldo Rekening',14,y);y+=8;data.accounts.forEach(a=>{doc.text(a.name+': '+rp(accountBalance(a)),18,y);y+=7});
@@ -279,6 +338,9 @@ $('exportPdf').onclick=()=>{
  doc.save('Laporan_Keuangan_'+month+'.pdf');
 };
 function download(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+// Normalisasi ID rekening/transaksi agar selector dan rekap konsisten setelah restore/import.
+data.accounts=(data.accounts||[]).map(a=>({...a,id:Number(a.id),opening:Number(a.opening)||0}));
+data.transactions=(data.transactions||[]).map(t=>({...t,id:t.id,accountId:Number(t.accountId),from:t.from==null?undefined:Number(t.from),to:t.to==null?undefined:Number(t.to),amount:Number(t.amount)||0}));
 render();
 </script>
 </body>
