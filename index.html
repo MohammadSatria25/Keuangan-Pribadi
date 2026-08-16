@@ -118,40 +118,34 @@ function accountBalance(a){
 }
 
 function renderAccountManage(){
- const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button><button class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></td></tr>`).join('');
- const el=$('accountManageTable'); if(el)el.innerHTML=rows||'<tr><td colspan="3" class="empty">Belum ada rekening.</td></tr>';
+ const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button><button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></td></tr>`).join('');
+ const el=$('accountManageTable');
+ if(el) el.innerHTML=rows||'<tr><td colspan="3" class="empty">Belum ada rekening.</td></tr>';
 }
 function renderAccounts(){
  const accs=activeAccounts();
  const current=Number(window.activeAccountId||document.getElementById('viewAccount')?.value)||null;
- const cards=accs.map(a=>`
- <div class="account">
-   <div class="account-select" data-account-select="${a.id}" style="cursor:pointer">
-     <span class="account-name">${esc(a.name)}</span>
-     <div class="account-bal">${rp(accountBalance(a))}</div>
-     <small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small>
-   </div>
-   <div class="actions" style="margin-top:10px">
-     <button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button>
-     <button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button>
-   </div>
- </div>`).join('');
- $('accounts').innerHTML=cards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
+ const cards=accs.map(a=>`<div class="account"><div class="account-select" style="cursor:pointer" onclick="window.selectAccount(${a.id});return false;"><span class="account-name">${esc(a.name)}</span><div class="account-bal">${rp(accountBalance(a))}</div><small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small></div><div class="actions" style="margin-top:10px"><button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button><button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></div>`).join('');
+ const accountsEl=$('accounts');
+ if(accountsEl) accountsEl.innerHTML=cards||'<div class="empty">Belum ada rekening.</div>';
  const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
- $('viewAccount').innerHTML=opts||'<option value="">Belum ada rekening</option>';
- if(accs.length){
-   const keep=accs.some(a=>Number(a.id)===Number(current))?Number(current):Number(accs[0].id);
-   window.activeAccountId=keep;
-   $('viewAccount').value=String(keep);
+ const va=$('viewAccount');
+ if(va){
+   va.innerHTML=opts||'<option value="">Belum ada rekening</option>';
+   if(accs.length){
+     const keep=accs.some(a=>Number(a.id)===Number(current))?Number(current):Number(accs[0].id);
+     window.activeAccountId=keep;
+     va.value=String(keep);
+   }
  }
  if($('txAccount')) $('txAccount').innerHTML=opts;
- if($('editAccount')) $('editAccount').innerHTML=opts;
+ if($('editAccount')) $('editAccount').value=accs.length?String(window.activeAccountId||accs[0].id):'';
  if($('editTo')) $('editTo').innerHTML=opts;
  if($('txAccountLocked')){
    const a=accs.find(x=>Number(x.id)===Number(window.activeAccountId));
    $('txAccountLocked').value=a?a.name:'Belum ada rekening';
  }
- renderAccountManage();
+ if(typeof renderAccountManage==='function')renderAccountManage();
 }
 function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
 function accountMonthTx(id){
@@ -212,11 +206,11 @@ function renderAccountRecap(){
 }
 
 function renderTransactions(mt){
- $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn edit" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn delete" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
+ if($('txTable')) $('txTable').innerHTML=mt.length?mt.slice().reverse().map(t=>`<tr><td>${t.date}</td><td>${t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer'}</td><td>${esc(t.category||'-')}</td><td>${esc(data.accounts.find(a=>a.id===t.accountId)?.name||'-')}</td><td>${esc(t.note||'-')}</td><td class="num">${rp(t.amount)}</td><td><div class="actions"><button class="btn edit" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn delete" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Belum ada transaksi pada bulan ini.</td></tr>';
 }
 function renderDebts(){
  const rows=data.debts||[];
- $('debtTable').innerHTML=rows.map(d=>{
+ if($('debtTable')) $('debtTable').innerHTML=rows.map(d=>{
    const amount=Number(d.amount)||0, paid=Number(d.paid)||0, remain=Math.max(0,amount-paid);
    return `<tr><td><b>${esc(d.name||'')}</b></td><td>${rp(amount)}</td><td>${rp(paid)}</td><td><b>${rp(remain)}</b></td><td>${esc(d.due||'-')}</td><td>${esc(d.note||'-')}</td><td><div class="actions"><button class="btn" onclick="editDebt('${d.id}')">✏️ Edit</button><button class="btn" style="color:#dc2626" onclick="deleteDebt('${d.id}')">🗑️ Hapus</button></div></td></tr>`;
  }).join('')||'<tr><td colspan="7" class="empty">Belum ada piutang.</td></tr>';
@@ -270,7 +264,7 @@ $('addTx').onclick=()=>{
 
 function renderMonitoring(mt){
   const rows=(mt||[]).slice().sort((a,b)=>String(b.date).localeCompare(String(a.date)));
-  $('monitorTable').innerHTML=rows.map(t=>{
+  if($('monitorTable')) $('monitorTable').innerHTML=rows.map(t=>{
     const kind=t.type==='income'?'Pemasukan':t.type==='expense'?'Pengeluaran':'Transfer';
     const color=t.type==='income'?'#16a34a':t.type==='expense'?'#ef4444':'#2563eb';
     return `<tr><td>${esc(t.date||'')}</td><td style="color:${color};font-weight:800">${kind}</td><td>${esc(t.category||'-')}</td><td>${esc(t.note||'-')}</td><td class="num" style="font-weight:800">${rp(t.amount||0)}</td><td><div class="actions"><button class="btn edit" onclick="editTx('${t.id}')">✏️ Edit</button><button class="btn delete" onclick="deleteTx('${t.id}')">🗑️ Hapus</button></div></td></tr>`;
@@ -554,51 +548,27 @@ document.addEventListener('click', function(e){
 
 <script>
 window.deleteAccountDirect=function(id){
-  try{
-    if(!window.data || !Array.isArray(data.accounts)){
-      alert('Data rekening tidak ditemukan. Silakan refresh halaman.');
-      return false;
-    }
-    const account=data.accounts.find(a=>Number(a.id)===Number(id));
-    if(!account){
-      alert('Rekening tidak ditemukan.');
-      return false;
-    }
-
-    const used=(data.transactions||[]).some(t =>
-      Number(t.accountId)===Number(id) ||
-      Number(t.from)===Number(id) ||
-      Number(t.to)===Number(id)
-    );
-
-    if(used){
-      alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi.\\n\\nUntuk menjaga riwayat keuangan tetap aman, hapus atau pindahkan/revisi transaksi rekening ini terlebih dahulu.');
-      return false;
-    }
-
-    if(data.accounts.length<=1){
-      alert('Tidak dapat menghapus rekening terakhir. Minimal harus ada satu rekening.');
-      return false;
-    }
-
-    const ok=window.confirm('Yakin ingin menghapus rekening "'+(account.name||'')+'"?');
-    if(!ok)return false;
-
-    data.accounts=data.accounts.filter(a=>Number(a.id)!==Number(id));
-
-    const next=data.accounts[0];
-    window.activeAccountId=next ? Number(next.id) : null;
-
-    if(typeof save==='function') save();
-    if(typeof render==='function') render();
-
-    alert('Rekening "'+(account.name||'')+'" berhasil dihapus.');
-    return false;
-  }catch(err){
-    console.error(err);
-    alert('Gagal menghapus rekening: '+err.message);
-    return false;
-  }
+ try{
+  if(!window.data || !Array.isArray(data.accounts)){alert('Data rekening tidak tersedia.');return false;}
+  const account=data.accounts.find(a=>Number(a.id)===Number(id));
+  if(!account){alert('Rekening tidak ditemukan.');return false;}
+  const used=(data.transactions||[]).some(t=>Number(t.accountId)===Number(id)||Number(t.from)===Number(id)||Number(t.to)===Number(id));
+  if(used){alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi. Silakan revisi/hapus transaksi terlebih dahulu.');return false;}
+  if(data.accounts.length<=1){alert('Rekening terakhir tidak dapat dihapus.');return false;}
+  if(!confirm('Hapus rekening "'+(account.name||'')+'"?'))return false;
+  const deletedName=account.name||'';
+  data.accounts=data.accounts.filter(a=>Number(a.id)!==Number(id));
+  const next=data.accounts[0];
+  window.activeAccountId=next?Number(next.id):null;
+  if(typeof save==='function')save();
+  try{if(typeof render==='function')render();}catch(renderError){console.error('Render after delete:',renderError);}
+  alert('Rekening "'+deletedName+'" berhasil dihapus.');
+  return false;
+ }catch(err){
+  console.error(err);
+  alert('Gagal menghapus rekening: '+err.message);
+  return false;
+ }
 };
 </script>
 
@@ -750,5 +720,19 @@ window.deleteAccountDirect=function(id){
     return false;
   }
 };
+</script>
+
+<script>
+(function(){
+  // Safe DOM setters: prevent a missing optional panel from breaking render().
+  window.setHTMLSafe=function(id,value){
+    const el=document.getElementById(id);
+    if(el) el.innerHTML=value;
+  };
+  window.setTextSafe=function(id,value){
+    const el=document.getElementById(id);
+    if(el) el.textContent=value;
+  };
+})();
 </script>
 </body></html>
