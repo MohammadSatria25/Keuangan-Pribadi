@@ -124,48 +124,56 @@ function renderAccountManage(){
 }
 function renderAccounts(){
  const accs=activeAccounts();
- const current=Number(window.activeAccountId||document.getElementById('viewAccount')?.value)||null;
- const cards=accs.map(a=>`<div class="account"><div class="account-select" style="cursor:pointer" onclick="window.selectAccount(${a.id});return false;"><span class="account-name">${esc(a.name)}</span><div class="account-bal">${rp(accountBalance(a))}</div><small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small></div><div class="actions" style="margin-top:10px"><button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button><button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></div>`).join('');
+ let current=window.getActiveAccountId?window.getActiveAccountId():null;
+ if(!accs.length){
+   current=null;
+   window.activeAccountId=null;
+ }else if(!accs.some(a=>Number(a.id)===Number(current))){
+   current=Number(accs[0].id);
+   if(window.setActiveAccount)window.setActiveAccount(current);
+ }
+ const cards=accs.map(a=>`<div class="account">
+   <div class="account-select" style="cursor:pointer" onclick="window.selectAccount(${a.id});return false;">
+     <span class="account-name">${esc(a.name)}</span>
+     <div class="account-bal">${rp(accountBalance(a))}</div>
+     <small>${Number(a.id)===Number(current)?'● Rekening aktif':'Klik untuk memilih'}</small>
+   </div>
+   <div class="actions" style="margin-top:10px">
+     <button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button>
+     <button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button>
+   </div>
+ </div>`).join('');
  const accountsEl=$('accounts');
  if(accountsEl) accountsEl.innerHTML=cards||'<div class="empty">Belum ada rekening.</div>';
+
  const opts=accs.map(a=>`<option value="${a.id}">${esc(a.name)}</option>`).join('');
  const va=$('viewAccount');
  if(va){
    va.innerHTML=opts||'<option value="">Belum ada rekening</option>';
-   if(accs.length){
-     const keep=accs.some(a=>Number(a.id)===Number(current))?Number(current):Number(accs[0].id);
-     window.activeAccountId=keep;
-     va.value=String(keep);
-   }
+   if(current!==null) va.value=String(current);
  }
  if($('txAccount')) $('txAccount').innerHTML=opts;
- if($('editAccount')) $('editAccount').value=accs.length?String(window.activeAccountId||accs[0].id):'';
  if($('editTo')) $('editTo').innerHTML=opts;
  if($('txAccountLocked')){
-   const a=accs.find(x=>Number(x.id)===Number(window.activeAccountId));
+   const a=accs.find(x=>Number(x.id)===Number(current));
    $('txAccountLocked').value=a?a.name:'Belum ada rekening';
  }
  if(typeof renderAccountManage==='function')renderAccountManage();
 }
-function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
-function accountMonthTx(id){
- const accountId=Number(id);
- const periodValue=$('period')?.value||'';
- return (data.transactions||[]).filter(t=>{
-   const date=String(t.date||'');
-   if(periodValue && date.slice(0,7)!==periodValue)return false;
-   if(t.type==='transfer'){
-     return Number(t.from)===accountId || Number(t.to)===accountId;
-   }
-   return Number(t.accountId)===accountId;
- });
+function selectedAccountId(){
+ const n=window.getActiveAccountId?window.getActiveAccountId():Number(window.activeAccountId);
+ return Number.isFinite(n)?n:null;
 }
 window.selectAccount=function(id){
- const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
- if(!acc){toast('Rekening tidak ditemukan');return;}
- window.activeAccountId=Number(acc.id);
- if($('viewAccount'))$('viewAccount').value=String(acc.id);
- if(typeof render==='function')render();
+ const n=Number(id);
+ if(!window.setActiveAccount || !window.setActiveAccount(n)){
+   alert('Rekening tidak ditemukan.');
+   return false;
+ }
+ const sel=document.getElementById('viewAccount');
+ if(sel) sel.value=String(n);
+ if(typeof render==='function') render();
+ return false;
 };
 
 function render(){
@@ -673,7 +681,7 @@ window.deleteAccountDirect=function(id){
     if(t.to!==undefined)t.to=Number(t.to);
     return t;
   });
-  if(!window.activeAccountId && data.accounts.length)window.activeAccountId=Number(data.accounts[0].id);
+  if(!window.activeAccountId){try{const saved=Number(localStorage.getItem('keuangan_active_account'));if(data.accounts.some(a=>Number(a.id)===saved))window.activeAccountId=saved;}catch(e){}} if(!window.activeAccountId && data.accounts.length)window.activeAccountId=Number(data.accounts[0].id);
   if(typeof save==='function')save();
  }catch(e){console.error(e)}
 })();
@@ -735,4 +743,62 @@ window.deleteAccountDirect=function(id){
   };
 })();
 </script>
+
+<script>
+(function(){
+  window.getActiveAccountId = function(){
+    const v = window.activeAccountId;
+    return v !== undefined && v !== null && v !== '' ? Number(v) : null;
+  };
+  window.setActiveAccount = function(id){
+    const n=Number(id);
+    if(!Number.isFinite(n)) return false;
+    const exists=(window.data && Array.isArray(data.accounts)) ? data.accounts.some(a=>Number(a.id)===n) : false;
+    if(!exists) return false;
+    window.activeAccountId=n;
+    try{ localStorage.setItem('keuangan_active_account',String(n)); }catch(e){}
+    return true;
+  };
+  window.restoreActiveAccount = function(){
+    let n=null;
+    try{ n=Number(localStorage.getItem('keuangan_active_account')); }catch(e){}
+    if(window.data && Array.isArray(data.accounts) && data.accounts.length){
+      if(!Number.isFinite(n) || !data.accounts.some(a=>Number(a.id)===n)){
+        n=Number(data.accounts[0].id);
+      }
+      window.activeAccountId=n;
+      return n;
+    }
+    return null;
+  };
+})();
+</script>
 </body></html>
+<script>
+(function(){
+  document.addEventListener('change',function(e){
+    if(e.target && e.target.id==='viewAccount'){
+      const id=Number(e.target.value);
+      if(window.setActiveAccount && window.setActiveAccount(id)){
+        if(typeof render==='function')render();
+      }
+    }
+  }, true);
+
+  // Restore the user's last selected account after the existing data initialization.
+  function restore(){
+    try{
+      if(window.restoreActiveAccount){
+        const id=window.restoreActiveAccount();
+        const sel=document.getElementById('viewAccount');
+        if(sel && id!==null) sel.value=String(id);
+      }
+    }catch(e){console.error(e)}
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',restore);
+  }else{
+    setTimeout(restore,0);
+  }
+})();
+</script>
