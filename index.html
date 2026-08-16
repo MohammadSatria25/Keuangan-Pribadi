@@ -11,8 +11,82 @@
 @media(max-width:850px){.sidebar{width:72px}.brand{justify-content:center}.brand div:not(.brand-icon),.nav-label,.nav button span:not(.ico){display:none}.nav button{justify-content:center}.main{margin-left:72px;padding:18px 14px}.kpis{grid-template-columns:1fr}.two{grid-template-columns:1fr}.account-grid{grid-template-columns:1fr 1fr}.header{align-items:flex-start;flex-direction:column}.filters{width:100%}}
 @media(max-width:520px){.account-grid{grid-template-columns:1fr}.filters{flex-direction:column;align-items:stretch}.pie-area{flex-direction:column}.pie{width:175px;height:175px}}
 </style>
+
+<style id="dashboard-enhancement">
+/* Dashboard visual enhancement */
+.dashboard-hero{
+  background:linear-gradient(135deg,#0f2d59 0%,#1758a8 52%,#2b7de9 100%);
+  color:#fff!important;border-radius:24px;padding:28px 30px;margin-bottom:20px;
+  box-shadow:0 14px 35px rgba(15,45,89,.18);position:relative;overflow:hidden
+}
+.dashboard-hero:after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  right:-70px;top:-90px;background:rgba(255,255,255,.10)
+}
+.dashboard-hero h1,.dashboard-hero h2,.dashboard-hero p{color:#fff!important;position:relative;z-index:1}
+.dashboard-controls{
+  background:#fff;border:1px solid #e4ebf5;border-radius:18px;padding:14px;
+  box-shadow:0 8px 24px rgba(22,53,92,.07)
+}
+.kpi-grid-enhanced{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:18px 0}
+.kpi-card-enhanced{border:0!important;border-radius:20px!important;padding:20px!important;
+ box-shadow:0 10px 26px rgba(22,53,92,.10)!important;position:relative;overflow:hidden}
+.kpi-card-enhanced:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+.kpi-saldo:before{background:#2563eb}.kpi-income:before{background:#10b981}.kpi-expense:before{background:#ef4444}
+.kpi-card-enhanced .kpi-label{font-size:13px;font-weight:800;letter-spacing:.4px;color:#64748b}
+.kpi-card-enhanced .kpi-value{font-size:28px;font-weight:900;margin-top:7px}
+.kpi-saldo .kpi-value{color:#2563eb}.kpi-income .kpi-value{color:#059669}.kpi-expense .kpi-value{color:#dc2626}
+.charts-grid-enhanced{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px}
+.chart-card-enhanced{background:#fff;border:1px solid #e6edf6;border-radius:22px;padding:20px;
+ box-shadow:0 10px 28px rgba(22,53,92,.08)}
+.chart-card-enhanced h3{margin:0 0 4px;color:#102a43;font-size:18px}
+.chart-card-enhanced .chart-sub{color:#7b8ba1;font-size:12px;margin-bottom:12px}
+.chart-wrap-enhanced{height:280px;position:relative}
+.chart-wrap-enhanced canvas{max-width:100%;max-height:100%}
+.empty-chart{height:100%;display:flex;align-items:center;justify-content:center;color:#94a3b8;
+ background:#f8fafc;border-radius:16px}
+@media(max-width:800px){
+ .kpi-grid-enhanced,.charts-grid-enhanced{grid-template-columns:1fr}
+}
+</style>
+
+<style id="hide-dashboard-accounts">
+/* The dashboard no longer shows the account-card list. Account management remains in the Rekening menu. */
+#accounts,.dashboard-accounts,#dashboardAccounts{display:none!important}
+</style>
 </head>
 <body>
+<div id="enhancedDashboard" class="dashboard-enhanced">
+  <div class="dashboard-hero">
+    <h1 style="margin:0 0 6px">Ringkasan Keuangan</h1>
+    <p style="margin:0;opacity:.92">Pantau kondisi keuangan rekening aktif secara cepat dan mudah.</p>
+  </div>
+  <div class="dashboard-controls" id="enhancedDashboardControls">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div><label style="font-weight:800">Rekening Aktif</label><div id="enhancedAccountName" style="font-size:16px;font-weight:800;margin-top:6px">-</div></div>
+      <div><label style="font-weight:800">Periode</label><div id="enhancedPeriodName" style="font-size:16px;font-weight:800;margin-top:6px">-</div></div>
+    </div>
+  </div>
+  <div class="kpi-grid-enhanced">
+    <div class="kpi-card-enhanced kpi-saldo"><div class="kpi-label">TOTAL SALDO</div><div id="enhancedSaldo" class="kpi-value">Rp0</div></div>
+    <div class="kpi-card-enhanced kpi-income"><div class="kpi-label">PEMASUKAN</div><div id="enhancedIncome" class="kpi-value">Rp0</div></div>
+    <div class="kpi-card-enhanced kpi-expense"><div class="kpi-label">PENGELUARAN</div><div id="enhancedExpense" class="kpi-value">Rp0</div></div>
+  </div>
+  <div class="charts-grid-enhanced">
+    <div class="chart-card-enhanced">
+      <h3>🟢 Pemasukan Berdasarkan Kategori</h3>
+      <div class="chart-sub">Periode dan rekening aktif yang dipilih</div>
+      <div class="chart-wrap-enhanced"><canvas id="incomeCategoryChart"></canvas><div id="incomeCategoryEmpty" class="empty-chart" style="display:none">Belum ada pemasukan pada periode ini.</div></div>
+    </div>
+    <div class="chart-card-enhanced">
+      <h3>🔴 Pengeluaran Berdasarkan Kategori</h3>
+      <div class="chart-sub">Periode dan rekening aktif yang dipilih</div>
+      <div class="chart-wrap-enhanced"><canvas id="expenseCategoryChart"></canvas><div id="expenseCategoryEmpty" class="empty-chart" style="display:none">Belum ada pengeluaran pada periode ini.</div></div>
+    </div>
+  </div>
+</div>
+
+
 <div class="app">
 <aside class="sidebar">
 <div class="brand"><div class="brand-icon">💰</div><div><b>KeuanganKu</b><small>Personal Finance</small></div></div>
@@ -219,7 +293,7 @@ function render(){
   if(typeof renderTransactions==='function')renderTransactions(mt);
   if(typeof renderMonitoring==='function')renderMonitoring(mt);
   if(typeof renderDebts==='function')renderDebts();
-  if(typeof renderCharts==='function')renderCharts(mt,inc,exp);
+  if(typeof renderCharts==='function')renderCharts(mt,inc,exp); if(typeof renderCategoryCharts==='function')renderCategoryCharts(mt,inc,exp);
   if(typeof renderBudgets==='function')renderBudgets(mt);
   if(typeof renderAnalysis==='function')renderAnalysis(mt,inc,exp);
 }
@@ -884,6 +958,117 @@ window.deleteAccountDirect=function(id){
       el.dataset.zeroReady='0';
     }
   },true);
+})();
+</script>
+
+<script id="category-chart-enhancement">
+(function(){
+  let incomeChart=null, expenseChart=null;
+
+  function categoryTotals(transactions,type){
+    const totals={};
+    (transactions||[]).forEach(t=>{
+      if(t.type!==type)return;
+      const amount=Number(t.amount)||0;
+      const key=String(t.category||t.kategori||'Lainnya').trim()||'Lainnya';
+      totals[key]=(totals[key]||0)+amount;
+    });
+    return Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+  }
+
+  function fallbackPie(canvasId,emptyId,items){
+    const canvas=document.getElementById(canvasId), empty=document.getElementById(emptyId);
+    if(!canvas)return;
+    if(!items.length){
+      canvas.style.display='none'; if(empty)empty.style.display='flex'; return;
+    }
+    if(empty)empty.style.display='none'; canvas.style.display='block';
+    const ctx=canvas.getContext('2d');
+    const total=items.reduce((s,x)=>s+x[1],0);
+    const colors=['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#64748b'];
+    let angle=-Math.PI/2;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const cx=canvas.width/2,cy=canvas.height/2,r=Math.min(cx,cy)-18;
+    items.forEach((it,i)=>{
+      const a=it[1]/total*Math.PI*2;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+a);ctx.closePath();
+      ctx.fillStyle=colors[i%colors.length];ctx.fill();angle+=a;
+    });
+    ctx.beginPath();ctx.fillStyle='#fff';ctx.arc(cx,cy,r*.52,0,Math.PI*2);ctx.fill();
+  }
+
+  function drawChart(canvasId,emptyId,items,existing){
+    const canvas=document.getElementById(canvasId), empty=document.getElementById(emptyId);
+    if(!canvas)return;
+    if(existing){try{existing.destroy()}catch(e){}}
+    if(!items.length){
+      canvas.style.display='none'; if(empty)empty.style.display='flex'; return null;
+    }
+    if(empty)empty.style.display='none'; canvas.style.display='block';
+    if(window.Chart){
+      return new Chart(canvas.getContext('2d'),{
+        type:'doughnut',
+        data:{
+          labels:items.map(x=>x[0]),
+          datasets:[{data:items.map(x=>x[1]),
+            backgroundColor:['#2563eb','#10b981','#f59e0b','#ef4444','#8b5cf6','#06b6d4','#ec4899','#64748b'],
+            borderColor:'#fff',borderWidth:3
+          }]
+        },
+        options:{
+          responsive:true,maintainAspectRatio:false,cutout:'55%',
+          plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:14}},
+            tooltip:{callbacks:{label:function(c){
+              return ' '+c.label+': '+(typeof rp==='function'?rp(c.raw):c.raw.toLocaleString('id-ID'));
+            }}}
+        }
+      });
+    }
+    canvas.width=520;canvas.height=260;fallbackPie(canvasId,emptyId,items);return null;
+  }
+
+  window.renderCategoryCharts=function(transactions,inc,exp){
+    const income=categoryTotals(transactions,'income');
+    const expense=categoryTotals(transactions,'expense');
+    incomeChart=drawChart('incomeCategoryChart','incomeCategoryEmpty',income,incomeChart);
+    expenseChart=drawChart('expenseCategoryChart','expenseCategoryEmpty',expense,expenseChart);
+
+    const acc=typeof selectedAccountId==='function' ? activeAccounts().find(a=>Number(a.id)===Number(selectedAccountId())) : null;
+    const period=document.getElementById('period');
+    const name=document.getElementById('enhancedAccountName');
+    const per=document.getElementById('enhancedPeriodName');
+    if(name)name.textContent=acc?acc.name:'Belum ada rekening';
+    if(per){
+      const v=period?period.value:'';
+      if(v){
+        const d=new Date(v+'-01T00:00:00');
+        per.textContent=d.toLocaleDateString('id-ID',{month:'long',year:'numeric'});
+      }else per.textContent='Semua periode';
+    }
+    const s=document.getElementById('enhancedSaldo');
+    const i=document.getElementById('enhancedIncome');
+    const e=document.getElementById('enhancedExpense');
+    if(s)s.textContent=acc&&typeof accountBalance==='function'?rp(accountBalance(acc)):'Rp0';
+    if(i)i.textContent=typeof rp==='function'?rp(inc||0):'Rp'+(inc||0).toLocaleString('id-ID');
+    if(e)e.textContent=typeof rp==='function'?rp(exp||0):'Rp'+(exp||0).toLocaleString('id-ID');
+  };
+})();
+</script>
+
+<script>
+(function(){
+  function hideDashboardAccounts(){
+    const active=location.hash||'';
+    // Only hide the account cards when the dashboard/main view is active.
+    const isDashboard=!active || active==='#dashboard' || active==='#home';
+    if(!isDashboard)return;
+    ['accounts','dashboardAccounts'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el)el.style.display='none';
+    });
+  }
+  document.addEventListener('DOMContentLoaded',hideDashboardAccounts);
+  window.addEventListener('hashchange',hideDashboardAccounts);
 })();
 </script>
 </body></html>
