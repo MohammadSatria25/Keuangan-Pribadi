@@ -90,6 +90,7 @@ let data=JSON.parse(localStorage.getItem(KEY)||'null')||{
  accounts:[],
  transactions:[], debts:[], budgets:{}
 };
+window.data=data;
 let receiptFile=null, scanned={};
 const activeAccounts=()=>data.accounts.filter(a=>String(a.name||'').trim().toLowerCase()!=='cash');
 function removeCashFromUi(){ data.accounts=data.accounts.filter(a=>String(a.name||'').trim().toLowerCase()!=='cash'); }
@@ -100,7 +101,7 @@ const rp=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maxim
 const today=new Date();
 $('period').value=today.toISOString().slice(0,7);
 $('txDate').value=today.toISOString().slice(0,10);
-function save(){localStorage.setItem(KEY,JSON.stringify(data));}
+function save(){ window.data=data;localStorage.setItem(KEY,JSON.stringify(data));}
 function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',2200)}
 function options(el,arr){$(el).innerHTML=arr.map(x=>'<option value="'+x+'">'+x+'</option>').join('')}
 options('txCategory',categories);options('budgetCategory',categories);options('rCategory',categories);
@@ -706,5 +707,48 @@ window.deleteAccountDirect=function(id){
   if(typeof save==='function')save();
  }catch(e){console.error(e)}
 })();
+</script>
+
+<script>
+window.deleteAccountDirect=function(id){
+  try{
+    const state=window.data;
+    if(!state || !Array.isArray(state.accounts)){
+      alert('Data rekening belum siap. Silakan muat ulang website sekali.');
+      return false;
+    }
+    const account=state.accounts.find(a=>Number(a.id)===Number(id));
+    if(!account){
+      alert('Rekening tidak ditemukan.');
+      return false;
+    }
+    const used=(state.transactions||[]).some(t =>
+      Number(t.accountId)===Number(id) ||
+      Number(t.from)===Number(id) ||
+      Number(t.to)===Number(id)
+    );
+    if(used){
+      alert('Rekening "'+(account.name||'')+'" masih memiliki transaksi.\\n\\nHapus atau revisi transaksi rekening ini terlebih dahulu.');
+      return false;
+    }
+    if(state.accounts.length<=1){
+      alert('Rekening terakhir tidak dapat dihapus.');
+      return false;
+    }
+    if(!window.confirm('Yakin ingin menghapus rekening "'+(account.name||'')+'"?')) return false;
+    state.accounts=state.accounts.filter(a=>Number(a.id)!==Number(id));
+    window.data=state;
+    const next=state.accounts[0];
+    window.activeAccountId=next?Number(next.id):null;
+    if(typeof save==='function')save();
+    if(typeof render==='function')render();
+    alert('Rekening "'+(account.name||'')+'" berhasil dihapus.');
+    return false;
+  }catch(err){
+    console.error(err);
+    alert('Gagal menghapus rekening: '+err.message);
+    return false;
+  }
+};
 </script>
 </body></html>
