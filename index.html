@@ -55,7 +55,7 @@
 
 <section id="view-rekening" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Rekening</div><div class="subtitle">Kelola rekening satu per satu.</div></div></div><section class="card" id="rekening"><div class="section-title"><h2>💳 Daftar Rekening</h2><span class="muted">Pilih rekening untuk melihat detail</span></div><div id="accounts" class="account-grid"></div><div class="grid formgrid" style="margin-top:13px"><div class="field"><label>Nama rekening</label><input id="accName" placeholder="BCA / Mandiri / BRI / E-Wallet"></div><div class="field"><label>Saldo awal</label><input id="accBalance" type="number" value="0"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addAccount" style="width:100%">+ Tambah</button></div></div>
 <div class="card section" style="box-shadow:none">
- <div class="section-title"><h2>⚙️ Kelola Rekening</h2><span class="muted">Gunakan tombol Edit / Hapus di sini</span></div>
+ <div class="section-title"><h2>⚙️ Kelola Rekening</h2><span class="muted">Kelola rekening: Edit atau Hapus</span></div>
  <div class="table-wrap"><table><thead><tr><th>Rekening</th><th class="num">Saldo Saat Ini</th><th>Aksi</th></tr></thead><tbody id="accountManageTable"></tbody></table></div>
 </div>
 </section></section>
@@ -117,7 +117,7 @@ function accountBalance(a){
 }
 
 function renderAccountManage(){
- const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="editAccount(${a.id});return false;">✏️ Edit</button><button class="btn delete" onclick="deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></td></tr>`).join('');
+ const rows=activeAccounts().map(a=>`<tr><td><b>${esc(a.name)}</b></td><td class="num">${rp(accountBalance(a))}</td><td><div class="actions"><button class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button><button class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button></div></td></tr>`).join('');
  const el=$('accountManageTable'); if(el)el.innerHTML=rows||'<tr><td colspan="3" class="empty">Belum ada rekening.</td></tr>';
 }
 function renderAccounts(){
@@ -131,8 +131,8 @@ function renderAccounts(){
      <small>${Number(a.id)===current?'● Rekening aktif':'Klik untuk memilih'}</small>
    </div>
    <div class="actions" style="margin-top:10px">
-     <button type="button" class="btn edit" onclick="editAccount(${a.id});return false;">✏️ Edit</button>
-     <button type="button" class="btn delete" onclick="deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button>
+     <button type="button" class="btn edit" onclick="window.editAccount(${a.id});return false;">✏️ Edit</button>
+     <button type="button" class="btn delete" onclick="window.deleteAccountDirect(${a.id});return false;">🗑️ Hapus</button>
    </div>
  </div>`).join('');
  $('accounts').innerHTML=cards||'<div class="empty">Belum ada rekening. Tambahkan rekening terlebih dahulu.</div>';
@@ -154,7 +154,16 @@ function renderAccounts(){
 }
 function selectedAccountId(){ return Number(window.activeAccountId)||Number($('viewAccount').value)||null; }
 function accountMonthTx(id){
- return monthTx().filter(t=>Number(t.accountId)===Number(id) || (t.type==='transfer' && Number(t.to)===Number(id)));
+ const accountId=Number(id);
+ const periodValue=$('period')?.value||'';
+ return (data.transactions||[]).filter(t=>{
+   const date=String(t.date||'');
+   if(periodValue && date.slice(0,7)!==periodValue)return false;
+   if(t.type==='transfer'){
+     return Number(t.from)===accountId || Number(t.to)===accountId;
+   }
+   return Number(t.accountId)===accountId;
+ });
 }
 window.selectAccount=function(id){
  const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
@@ -167,22 +176,29 @@ window.selectAccount=function(id){
 function render(){
  renderAccounts();
  const id=selectedAccountId();
+ const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
  if(id){
-   $('txAccount').value=String(id);
-   $('editAccount').value=String(id);
-   const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
+   if($('txAccount'))$('txAccount').value=String(id);
+   if($('editAccount'))$('editAccount').value=String(id);
    if($('txAccountLocked'))$('txAccountLocked').value=acc?acc.name:'';
  }
  const mt=id?accountMonthTx(id):[];
- const inc=mt.filter(t=>t.type==='income' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+(Number(t.amount)||0),0);
- const exp=mt.filter(t=>t.type==='expense' && Number(t.accountId)===Number(id)).reduce((s,t)=>s+(Number(t.amount)||0),0);
- const acc=activeAccounts().find(a=>Number(a.id)===Number(id));
+ let inc=0,exp=0;
+ mt.forEach(t=>{
+   const amount=Number(t.amount)||0;
+   if(t.type==='income' && Number(t.accountId)===Number(id)) inc+=amount;
+   if(t.type==='expense' && Number(t.accountId)===Number(id)) exp+=amount;
+   if(t.type==='transfer'){
+     // Transfers change balances but are not income/expense.
+   }
+ });
  $('saldo').textContent=acc?rp(accountBalance(acc)):'Rp0';
  $('income').textContent=rp(inc);
  $('expense').textContent=rp(exp);
- $('receivable').textContent=rp(inc-exp);
+ if($('receivable'))$('receivable').textContent=rp(inc-exp);
  renderAccountRecap();
- renderTransactions(mt);renderMonitoring(mt);renderDebts();renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
+ renderTransactions(mt);renderMonitoring(mt);renderDebts();
+ renderCharts(mt,inc,exp);renderBudgets(mt);renderAnalysis(mt,inc,exp);
 }
 function renderAccountRecap(){
  const month=$('period').value;
@@ -583,5 +599,112 @@ window.deleteAccountDirect=function(id){
     return false;
   }
 };
+</script>
+
+<div id="accountManagerModal" style="display:none;position:fixed;inset:0;background:rgba(7,24,52,.62);z-index:99999;align-items:center;justify-content:center;padding:20px">
+ <div style="background:#fff;width:min(520px,96vw);border-radius:18px;padding:22px;box-shadow:0 24px 70px rgba(0,0,0,.25)">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+   <h2 style="margin:0;font-size:20px">✏️ Edit Rekening</h2>
+   <button type="button" id="accountManagerClose" class="btn">✕</button>
+  </div>
+  <input id="managerAccountId" type="hidden">
+  <div class="field" style="margin-bottom:12px"><label>Nama Rekening</label><input id="managerAccountName" style="width:100%"></div>
+  <div class="field" style="margin-bottom:16px"><label>Saldo Awal</label><input id="managerAccountOpening" type="number" min="0" style="width:100%"></div>
+  <div style="display:flex;justify-content:flex-end;gap:8px">
+   <button type="button" id="accountManagerCancel" class="btn">Batal</button>
+   <button type="button" id="accountManagerSave" class="btn primary">💾 Simpan</button>
+  </div>
+ </div>
+</div>
+
+<script>
+(function(){
+  function getAccount(id){
+    return (data.accounts||[]).find(a=>Number(a.id)===Number(id));
+  }
+
+  window.editAccount=function(id){
+    const a=getAccount(id);
+    if(!a){ alert('Rekening tidak ditemukan.'); return false; }
+    const modal=document.getElementById('accountManagerModal');
+    document.getElementById('managerAccountId').value=String(a.id);
+    document.getElementById('managerAccountName').value=a.name||'';
+    document.getElementById('managerAccountOpening').value=Number(a.opening)||0;
+    modal.style.display='flex';
+    setTimeout(()=>document.getElementById('managerAccountName').focus(),50);
+    return false;
+  };
+
+  window.deleteAccountDirect=function(id){
+    const a=getAccount(id);
+    if(!a){alert('Rekening tidak ditemukan.');return false;}
+    const used=(data.transactions||[]).some(t=>
+      Number(t.accountId)===Number(id) ||
+      Number(t.from)===Number(id) ||
+      Number(t.to)===Number(id)
+    );
+    if(used){
+      alert('Rekening "'+(a.name||'')+'" masih memiliki transaksi.\\n\\nSilakan hapus/revisi transaksi rekening tersebut terlebih dahulu.');
+      return false;
+    }
+    if((data.accounts||[]).length<=1){
+      alert('Rekening terakhir tidak dapat dihapus.');
+      return false;
+    }
+    if(!confirm('Hapus rekening "'+(a.name||'')+'"?')) return false;
+    data.accounts=data.accounts.filter(x=>Number(x.id)!==Number(id));
+    const next=data.accounts[0];
+    window.activeAccountId=next?Number(next.id):null;
+    if(typeof save==='function')save();
+    if(typeof render==='function')render();
+    alert('Rekening berhasil dihapus.');
+    return false;
+  };
+
+  function closeManager(){
+    document.getElementById('accountManagerModal').style.display='none';
+  }
+  document.getElementById('accountManagerClose').onclick=closeManager;
+  document.getElementById('accountManagerCancel').onclick=closeManager;
+  document.getElementById('accountManagerModal').addEventListener('click',function(e){
+    if(e.target===this)closeManager();
+  });
+  document.getElementById('accountManagerSave').onclick=function(){
+    const id=Number(document.getElementById('managerAccountId').value);
+    const a=getAccount(id);
+    if(!a)return;
+    const name=document.getElementById('managerAccountName').value.trim();
+    const opening=Number(document.getElementById('managerAccountOpening').value)||0;
+    if(!name){alert('Nama rekening wajib diisi.');return;}
+    if(name.toLowerCase()==='cash'){alert('Rekening Cash tidak digunakan.');return;}
+    const duplicate=(data.accounts||[]).some(x=>Number(x.id)!==id && String(x.name||'').trim().toLowerCase()===name.toLowerCase());
+    if(duplicate){alert('Nama rekening tersebut sudah digunakan.');return;}
+    a.name=name;
+    a.opening=opening;
+    if(typeof save==='function')save();
+    if(typeof render==='function')render();
+    closeManager();
+    alert('Rekening berhasil diperbarui.');
+  };
+})();
+</script>
+
+<script>
+(function(){
+ try{
+  if(!window.data)return;
+  data.accounts=(data.accounts||[]).filter(a=>String(a.name||'').trim().toLowerCase()!=='cash');
+  data.accounts.forEach(a=>{a.id=Number(a.id);a.opening=Number(a.opening)||0});
+  data.transactions=(data.transactions||[]).map(t=>{
+    t.amount=Number(t.amount)||0;
+    if(t.accountId!==undefined)t.accountId=Number(t.accountId);
+    if(t.from!==undefined)t.from=Number(t.from);
+    if(t.to!==undefined)t.to=Number(t.to);
+    return t;
+  });
+  if(!window.activeAccountId && data.accounts.length)window.activeAccountId=Number(data.accounts[0].id);
+  if(typeof save==='function')save();
+ }catch(e){console.error(e)}
+})();
 </script>
 </body></html>
