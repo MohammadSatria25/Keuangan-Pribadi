@@ -49,7 +49,7 @@
 
 <section id="view-transaksi" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Transaksi</div><div class="subtitle">Pemasukan, pengeluaran, dan transfer untuk rekening aktif.</div></div></div>
 <div class="card"><div class="notice">Rekening transaksi mengikuti <b>Rekening Aktif</b> di Dashboard. Untuk mengganti rekening, kembali ke Dashboard lalu pilih rekening yang diinginkan.</div>
-<div class="grid formgrid" style="margin-top:14px"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening Aktif</label><input id="txAccountLocked" readonly style="background:#f1f5f9"></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0"></div><div class="field wide"><label>Keterangan</label><input id="txNote"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></div>
+<div class="grid formgrid" style="margin-top:14px"><div class="field"><label>Tanggal</label><input id="txDate" type="date"></div><div class="field"><label>Jenis</label><select id="txType"><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option><option value="transfer">Transfer antar rekening</option></select></div><div class="field"><label>Kategori</label><select id="txCategory"></select></div><div class="field"><label>Rekening Aktif</label><input id="txAccountLocked" readonly style="background:#f1f5f9"></div><div class="field"><label>Nominal</label><input id="txAmount" type="number" min="0" placeholder="Masukkan nominal"></div><div class="field wide"><label>Keterangan</label><input id="txNote"></div><div style="display:flex;align-items:end"><button class="btn primary" id="addTx" style="width:100%">Simpan transaksi</button></div></div></div>
 <div class="card section"><div class="section-title"><h2>Daftar Transaksi Rekening Aktif</h2><span class="muted">Edit atau hapus dari sini</span></div><div class="table-wrap"><table><thead><tr><th>Tanggal</th><th>Jenis</th><th>Kategori</th><th>Keterangan</th><th class="num">Nominal</th><th>Aksi</th></tr></thead><tbody id="txTable"></tbody></table></div></div>
 </section>
 
@@ -60,9 +60,9 @@
 </div>
 </section></section>
 
-<section id="view-anggaran" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Anggaran</div><div class="subtitle">Anggaran hanya untuk rekening aktif dan periode terpilih.</div></div></div><section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section></section>
+<section id="view-anggaran" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Anggaran</div><div class="subtitle">Anggaran hanya untuk rekening aktif dan periode terpilih.</div></div></div><section class="card section" id="anggaran"><div class="section-title"><h2>🎯 Anggaran bulanan</h2><span class="muted">Bandingkan target dengan realisasi</span></div><div class="grid formgrid"><div class="field"><label>Kategori</label><select id="budgetCategory"></select></div><div class="field"><label>Target anggaran</label><input id="budgetAmount" type="number" min="0" placeholder="Masukkan nominal"></div><div style="display:flex;align-items:end"><button class="btn" id="saveBudget" style="width:100%">Simpan anggaran</button></div></div><div id="budgetList" style="margin-top:15px"></div></section></section>
 
-<section id="view-piutang" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Piutang</div><div class="subtitle">Kelola uang yang dipinjam dan keterangannya.</div></div></div><section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div class="field wide"><label>Keterangan / Keperluan</label><input id="debtNote" placeholder="Contoh: biaya sekolah / kebutuhan keluarga"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Keterangan / Keperluan</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section></section>
+<section id="view-piutang" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Piutang</div><div class="subtitle">Kelola uang yang dipinjam dan keterangannya.</div></div></div><section class="card section" id="piutang"><div class="section-title"><h2>👥 Piutang / uang yang dipinjam orang</h2><span class="muted">Pantau siapa yang masih memiliki kewajiban</span></div><div class="grid formgrid"><div class="field"><label>Nama</label><input id="debtName" placeholder="Nama orang"></div><div class="field"><label>Jumlah</label><input id="debtAmount" type="number" placeholder="Masukkan nominal"></div><div class="field"><label>Jatuh tempo</label><input id="debtDue" type="date"></div><div class="field wide"><label>Keterangan / Keperluan</label><input id="debtNote" placeholder="Contoh: biaya sekolah / kebutuhan keluarga"></div><div style="display:flex;align-items:end"><button class="btn" id="addDebt" style="width:100%">+ Tambah piutang</button></div></div><div style="overflow:auto;margin-top:14px"><table><thead><tr><th>Nama</th><th>Jumlah</th><th>Dibayar</th><th>Sisa</th><th>Jatuh Tempo</th><th>Keterangan / Keperluan</th><th>Aksi</th></tr></thead><tbody id="debtTable"></tbody></table></div></section></section>
 
 <section id="view-struk" class="view"><div class="header"><div><div class="eyebrow">Menu Utama</div><div class="title">Scan Struk</div><div class="subtitle">Struk akan masuk ke rekening aktif.</div></div></div><section class="card section receipt" id="struk"><div class="section-title"><h2>🧾 Scan struk pintar</h2><span class="badge">OCR</span></div><p class="muted">Upload foto struk untuk mencoba membaca toko, tanggal, total, dan teks pembelian secara otomatis. Periksa hasil sebelum menyimpan.</p><div class="actions"><label class="filebtn">📷 Pilih foto struk<input id="receiptFile" type="file" accept="image/*"></label><button class="btn primary" id="scanReceipt">✨ Analisis struk</button></div><div id="ocrStatus" class="muted" style="margin-top:10px"></div><div id="receiptPreview" class="hidden" style="margin-top:14px"><div class="grid formgrid"><div class="field"><label>Toko</label><input id="rStore"></div><div class="field"><label>Tanggal</label><input id="rDate" type="date"></div><div class="field"><label>Total</label><input id="rTotal" type="number"></div><div class="field"><label>Kategori</label><select id="rCategory"></select></div></div><div class="muted" style="margin-top:10px">Teks hasil OCR</div><pre id="ocrText" style="white-space:pre-wrap;max-height:170px;overflow:auto;background:#fff;border:1px solid var(--line);padding:10px;border-radius:10px;font-size:11px"></pre><button class="btn primary" id="saveReceipt">Simpan sebagai pengeluaran</button></div></section></section>
 
@@ -608,7 +608,7 @@ window.deleteAccountDirect=function(id){
   </div>
   <input id="managerAccountId" type="hidden">
   <div class="field" style="margin-bottom:12px"><label>Nama Rekening</label><input id="managerAccountName" style="width:100%"></div>
-  <div class="field" style="margin-bottom:16px"><label>Saldo Awal</label><input id="managerAccountOpening" type="number" min="0" style="width:100%"></div>
+  <div class="field" style="margin-bottom:16px"><label>Saldo Awal</label><input id="managerAccountOpening" type="number" min="0" style="width:100%" placeholder="Masukkan nominal"></div>
   <div style="display:flex;justify-content:flex-end;gap:8px">
    <button type="button" id="accountManagerCancel" class="btn">Batal</button>
    <button type="button" id="accountManagerSave" class="btn primary">💾 Simpan</button>
@@ -829,6 +829,61 @@ window.deleteAccountDirect=function(id){
     }catch(e){console.error(e)}
   }
   document.addEventListener('DOMContentLoaded',function(){setTimeout(syncActive,50);});
+})();
+</script>
+
+<script>
+(function(){
+  function isNumericField(el){
+    if(!el || el.tagName!=='INPUT') return false;
+    const type=(el.type||'').toLowerCase();
+    const id=(el.id||'').toLowerCase();
+    const name=(el.name||'').toLowerCase();
+    const cls=(el.className||'').toString().toLowerCase();
+    return type==='number' ||
+      /nominal|saldo|amount|opening|piutang|hutang|anggaran|budget|income|expense|harga|jumlah|bayar|target/.test(id+' '+name+' '+cls);
+  }
+
+  document.addEventListener('focusin',function(e){
+    const el=e.target;
+    if(!isNumericField(el)) return;
+    if(String(el.value)==='0'){
+      el.dataset.zeroReady='1';
+      // Put cursor at the end; don't clear until the user actually types.
+      try{el.setSelectionRange(String(el.value).length,String(el.value).length);}catch(_){}
+    }
+  },true);
+
+  document.addEventListener('keydown',function(e){
+    const el=e.target;
+    if(!isNumericField(el) || el.dataset.zeroReady!=='1') return;
+    // Only replace the default zero when the user starts entering a digit.
+    if(/^[0-9]$/.test(e.key)){
+      e.preventDefault();
+      el.value=e.key;
+      el.dataset.zeroReady='0';
+      el.dispatchEvent(new Event('input',{bubbles:true}));
+      return;
+    }
+    // Backspace/delete should behave normally and clear the field.
+    if(e.key==='Backspace' || e.key==='Delete'){
+      el.dataset.zeroReady='0';
+    }
+  },true);
+
+  document.addEventListener('input',function(e){
+    const el=e.target;
+    if(isNumericField(el) && String(el.value)!=='0') el.dataset.zeroReady='0';
+  },true);
+
+  document.addEventListener('blur',function(e){
+    const el=e.target;
+    if(!isNumericField(el)) return;
+    if(el.value==='' && el.dataset.keepZero!=='1'){
+      // Keep empty fields empty; validation can handle required values.
+      el.dataset.zeroReady='0';
+    }
+  },true);
 })();
 </script>
 </body></html>
